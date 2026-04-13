@@ -20,7 +20,8 @@
       --border:   #b5a07a;
     }
 
-    html { scroll-behavior: smooth; zoom: 1.25; }
+    html { scroll-behavior: smooth; }
+    @media (min-width: 601px) { html { zoom: 1.25; } }
     body {
       background: var(--bg);
       font-family: 'Courier New', Courier, monospace;
@@ -41,14 +42,20 @@
       position: sticky; top: 0; z-index: 100;
       background: #0a0b0d;
       border-bottom: 3px solid var(--red);
-      display: flex; align-items: center; padding: 0 2rem;
+      display: flex; align-items: center; padding: 0 2rem; flex-wrap: wrap;
     }
     .nav-brand {
       font-size: .68rem; letter-spacing: .15em; color: var(--gold);
       text-transform: uppercase; padding: .8rem 1.5rem .8rem 0;
-      border-right: 1px solid #2a2d33; margin-right: 1.5rem; white-space: nowrap;
+      border-right: 1px solid #2a2d33; margin-right: 1.5rem; white-space: nowrap; flex: 1;
     }
     .nav-brand span { display: block; font-size: .52rem; color: #666; letter-spacing: .1em; }
+    .nav-toggle {
+      display: none; background: none; border: 1px solid #333; color: #aaa;
+      font-size: 1.2rem; padding: .3rem .6rem; cursor: pointer; border-radius: 3px;
+      line-height: 1;
+    }
+    .nav-links { display: flex; align-items: center; }
     nav a {
       color: #999; text-decoration: none; font-size: .63rem; letter-spacing: .15em;
       text-transform: uppercase; padding: 1rem 1.2rem;
@@ -484,6 +491,90 @@
     .dec-revealed { font-size: 1.1rem; font-weight: 700; letter-spacing: .18em; color: #fff; text-transform: uppercase; line-height: 1.8; margin: 1.5rem 0; padding: 1.2rem 1.5rem; background: #0d0f12; border: 1px solid #4a8a4a; }
     .dec-revealed span { color: #7cba7c; }
     .dec-victory p { font-size: .68rem; color: #888; letter-spacing: .1em; text-transform: uppercase; }
+
+    /* ══════════════════════════════════════════════
+       MOBILE  (≤ 600px)
+    ══════════════════════════════════════════════ */
+    @media (max-width: 600px) {
+
+      /* Nav → hamburger */
+      .nav-toggle { display: flex; }
+      .nav-links {
+        display: none; flex-direction: column; width: 100%;
+        border-top: 1px solid #1e2025; padding-bottom: .3rem;
+      }
+      .nav-links.open { display: flex; }
+      .nav-brand { border-right: none; margin-right: 0; padding: .7rem 0; }
+      nav a {
+        padding: .75rem 1rem; border-bottom: 1px solid #1a1c20;
+        border-left: 3px solid transparent; margin-bottom: 0;
+        font-size: .7rem; letter-spacing: .1em;
+      }
+      nav a.active { border-left-color: var(--red); border-bottom-color: transparent; }
+
+      /* Page header */
+      .page-header { padding: 1.5rem 1rem 1.2rem; }
+      .page-header h1 { font-size: 1.5rem; }
+      .page-header::after { font-size: 2.5rem; }
+      .dept-badge { font-size: .55rem; padding: .3rem .8rem; }
+      .case-meta { gap: .8rem 1.2rem; }
+      .case-meta-item { font-size: .55rem; }
+      .case-meta-item strong { font-size: .68rem; }
+
+      /* Sections */
+      .section { padding: 1.2rem .9rem 3rem; }
+      .section-title { margin-bottom: 1.2rem; }
+      .section-title h2 { font-size: 1.1rem; }
+
+      /* Suspect cards */
+      .suspects-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .suspect-card { padding: 1rem; }
+      .suspect-photo-wrap { width: 90px; }
+      .suspect-photo-wrap img { width: 80px; height: 105px; }
+      .suspect-name { font-size: 1rem; }
+      .field-value { font-size: .7rem; }
+
+      /* Overview */
+      .overview-grid { grid-template-columns: 1fr; }
+      .overview-body { padding: 1rem; font-size: .78rem; }
+      .case-stats { padding: 1rem; }
+
+      /* Evidence */
+      .evidence-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .evidence-card { padding: 1rem; }
+
+      /* Testimonies */
+      .testimony-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .testimony-card { padding: 1rem; }
+
+      /* Decoder */
+      .decoder-cols { grid-template-columns: 1fr; gap: 1rem; }
+      .dec-panel { padding: 1rem; }
+      .morse-display { gap: .4rem; padding: .8rem .3rem; }
+      .m-dot  { width: 8px; height: 8px; }
+      .m-dash { width: 20px; height: 8px; }
+
+      /* Wordle tiles — smaller on phone */
+      .wordle-tile { width: 42px; height: 42px; font-size: 1.2rem; }
+      .wordle-grid  { gap: 4px; }
+      .wordle-row   { gap: 4px; }
+
+      /* Keyboard — tighter on phone */
+      .dec-keyboard { gap: 4px; }
+      .dec-kb-row   { gap: 3px; }
+      .dec-key      { height: 44px; min-width: 28px; padding: 0 5px; font-size: .65rem; }
+      .dec-key.wide { min-width: 48px; font-size: .52rem; }
+
+      /* Audio player */
+      .play-btn { width: 30px; height: 30px; font-size: .75rem; }
+      .audio-player { padding: .6rem .8rem; }
+
+      /* Pinned photos */
+      .pinned-photo { padding: 5px 5px 20px; }
+
+      /* Tape banner — smaller text */
+      .tape-inner { font-size: .65rem; }
+    }
   </style>
 </head>
 <body>
@@ -496,11 +587,14 @@
 <!-- Nav -->
 <nav>
   <div class="nav-brand">ZPD / LEO <span>Suntopia Police Department</span></div>
-  <a href="#" class="active" onclick="showSection('overview',this);return false;">Overview</a>
-  <a href="#" onclick="showSection('suspects',this);return false;">Suspects</a>
-  <a href="#" onclick="showSection('evidence',this);return false;">Evidence</a>
-  <a href="#" onclick="showSection('testimonies',this);return false;">Testimonies</a>
-  <a href="#" onclick="showSection('decoder',this);return false;">Decoder</a>
+  <button class="nav-toggle" id="nav-toggle" onclick="toggleNav()" aria-label="Menu">☰</button>
+  <div class="nav-links" id="nav-links">
+    <a href="#" class="active" onclick="showSection('overview',this);return false;">Overview</a>
+    <a href="#" onclick="showSection('suspects',this);return false;">Suspects</a>
+    <a href="#" onclick="showSection('evidence',this);return false;">Evidence</a>
+    <a href="#" onclick="showSection('testimonies',this);return false;">Testimonies</a>
+    <a href="#" onclick="showSection('decoder',this);return false;">Decoder</a>
+  </div>
 </nav>
 
 <!-- Header -->
@@ -1001,6 +1095,13 @@
     document.getElementById('section-' + name).classList.add('active');
     el.classList.add('active');
     if (name === 'decoder' && !decStarted) { decStarted = true; decInit(); }
+    // Close mobile nav after selecting a section
+    document.getElementById('nav-links').classList.remove('open');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleNav() {
+    document.getElementById('nav-links').classList.toggle('open');
   }
 
   const players = {};
