@@ -374,6 +374,116 @@
       padding:.3rem .8rem; font-size:.58rem; letter-spacing:.25em; text-transform:uppercase;
       font-weight:900; transform:rotate(-8deg); opacity:.65; margin-top:1rem;
     }
+
+    /* ── DECODER ──────────────────────────────────────────────── */
+    #section-decoder { color: #fff; }
+
+    .dec-progress-label {
+      font-size: .6rem; letter-spacing: .2em; color: var(--gold);
+      text-transform: uppercase; margin-bottom: .8rem; display: block; text-align: center;
+    }
+    .dec-sentence {
+      display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem;
+    }
+    .dec-word-chip {
+      padding: .3rem .8rem; background: #1c1e22; border: 1px solid #2e3035;
+      border-radius: 2px; font-size: .72rem; letter-spacing: .08em;
+      text-transform: uppercase; color: #444; transition: all .4s; font-family: 'Courier New', monospace;
+    }
+    .dec-word-chip.current  { border-color: var(--gold); color: var(--gold); }
+    .dec-word-chip.solved   { background: #1a3a1a; border-color: #4a8a4a; color: #7cba7c; }
+
+    .decoder-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+    @media(max-width:800px){ .decoder-cols { grid-template-columns: 1fr; } }
+
+    .dec-panel { background: #16181d; border: 1px solid #2a2d33; padding: 1.5rem; }
+    .dec-panel-label {
+      font-size: .55rem; letter-spacing: .2em; color: var(--red); text-transform: uppercase;
+      font-weight: 700; border-bottom: 1px solid #2a2d33; padding-bottom: .5rem;
+      margin-bottom: 1.2rem; display: flex; justify-content: space-between; align-items: center;
+    }
+    .dec-panel-sublabel { color: #777; font-size: .5rem; }
+
+    /* Morse display */
+    .morse-display {
+      display: flex; gap: .6rem; flex-wrap: wrap; justify-content: center;
+      padding: 1.2rem .5rem; min-height: 90px; align-items: center;
+      background: #0d0f12; border: 1px solid #1e2025; margin-bottom: 1rem;
+    }
+    .morse-char-cell { display: flex; flex-direction: column; align-items: center; gap: .6rem; }
+    .morse-symbols   { display: flex; gap: 4px; align-items: center; min-height: 12px; }
+    .m-dot  { width: 10px; height: 10px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+    .m-dash { width: 26px; height: 10px; background: var(--gold); border-radius: 3px; flex-shrink: 0; }
+    .morse-letter-label {
+      font-size: .75rem; font-weight: 700; color: #4caf50;
+      font-family: 'Courier New', monospace; letter-spacing: .1em; min-height: 1em;
+    }
+    .morse-sep { color: #333; font-size: 1.1rem; align-self: flex-start; padding-top: .1rem; }
+
+    .morse-ref-btn {
+      background: none; border: 1px solid #2e3035; color: #777;
+      font-size: .52rem; letter-spacing: .12em; text-transform: uppercase;
+      padding: .35rem .7rem; cursor: pointer; font-family: 'Courier New', monospace;
+      transition: border-color .2s, color .2s; display: block; width: 100%;
+    }
+    .morse-ref-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .morse-ref-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: .3rem;
+      margin-top: .75rem; padding-top: .75rem; border-top: 1px solid #2a2d33;
+      max-height: 260px; overflow-y: auto;
+    }
+    .morse-ref-item { display: flex; align-items: center; gap: .4rem; padding: .2rem .3rem; font-size: .6rem; color: #888; font-family: 'Courier New', monospace; }
+    .morse-ref-item .ref-letter { color: var(--gold); font-weight: 700; width: 12px; flex-shrink: 0; }
+
+    /* Wordle grid */
+    .wordle-counter { font-size: .5rem; letter-spacing: .12em; color: #666; text-transform: uppercase; }
+    .dec-toast { text-align: center; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; min-height: 1.5em; margin-bottom: .75rem; font-family: 'Courier New', monospace; color: transparent; }
+    .dec-toast.err { color: var(--red-lt); }
+    .dec-toast.ok  { color: #4caf50; }
+
+    .wordle-grid-wrap { display: flex; justify-content: center; margin: .25rem 0 1.25rem; }
+    .wordle-grid     { display: flex; flex-direction: column; gap: 6px; }
+    .wordle-row      { display: flex; gap: 6px; }
+    .wordle-tile {
+      width: 52px; height: 52px; border: 2px solid #3a3d42;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; font-weight: 900; text-transform: uppercase;
+      color: #fff; font-family: 'Courier New', monospace; user-select: none;
+      transition: border-color .05s;
+    }
+    .wordle-tile[data-state="tbd"]     { border-color: #888; }
+    .wordle-tile[data-state="correct"] { background: #538d4e; border-color: #538d4e; }
+    .wordle-tile[data-state="present"] { background: #b59f3b; border-color: #b59f3b; }
+    .wordle-tile[data-state="absent"]  { background: #3a3a3c; border-color: #3a3a3c; }
+    .wordle-tile.pop { animation: tile-pop .1s ease; }
+    @keyframes tile-pop { 0%,100%{transform:scale(1);} 50%{transform:scale(1.14);} }
+    .wordle-tile.flip { animation: tile-flip .46s ease forwards; }
+    @keyframes tile-flip { 0%{transform:rotateX(0deg);} 49%{transform:rotateX(90deg);} 51%{transform:rotateX(90deg);} 100%{transform:rotateX(0deg);} }
+    .wordle-tile.shake { animation: tile-shake .45s ease; }
+    @keyframes tile-shake { 0%,100%{transform:translateX(0);} 20%{transform:translateX(-7px);} 40%{transform:translateX(7px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(4px);} }
+
+    /* Keyboard */
+    .dec-keyboard { display: flex; flex-direction: column; gap: 6px; align-items: center; margin-top: .5rem; }
+    .dec-kb-row   { display: flex; gap: 5px; justify-content: center; }
+    .dec-key {
+      height: 50px; min-width: 34px; padding: 0 7px;
+      background: #818384; border: none; border-radius: 3px; color: #fff;
+      font-size: .72rem; font-weight: 700; text-transform: uppercase;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-family: 'Courier New', monospace; transition: background .15s; user-select: none;
+    }
+    .dec-key.wide { min-width: 58px; font-size: .58rem; }
+    .dec-key[data-state="correct"] { background: #538d4e; }
+    .dec-key[data-state="present"] { background: #b59f3b; }
+    .dec-key[data-state="absent"]  { background: #3a3a3c; }
+    .dec-key:hover { filter: brightness(1.18); }
+
+    /* Victory */
+    .dec-victory { text-align: center; padding: 3.5rem 2rem; background: #16181d; border: 1px solid #2a2d33; }
+    .dec-victory h3 { font-family: Impact, sans-serif; font-size: 2.2rem; color: var(--gold); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 1rem; }
+    .dec-revealed { font-size: 1.1rem; font-weight: 700; letter-spacing: .18em; color: #fff; text-transform: uppercase; line-height: 1.8; margin: 1.5rem 0; padding: 1.2rem 1.5rem; background: #0d0f12; border: 1px solid #4a8a4a; }
+    .dec-revealed span { color: #7cba7c; }
+    .dec-victory p { font-size: .68rem; color: #888; letter-spacing: .1em; text-transform: uppercase; }
   </style>
 </head>
 <body>
@@ -390,6 +500,7 @@
   <a href="#" onclick="showSection('suspects',this);return false;">Suspects</a>
   <a href="#" onclick="showSection('evidence',this);return false;">Evidence</a>
   <a href="#" onclick="showSection('testimonies',this);return false;">Testimonies</a>
+  <a href="#" onclick="showSection('decoder',this);return false;">Decoder</a>
 </nav>
 
 <!-- Header -->
@@ -825,17 +936,71 @@
   </div><!-- /testimony-grid -->
 </div>
 
+<!-- ═══════════ DECODER ═══════════ -->
+<div id="section-decoder" class="section">
+  <div class="section-title">
+    <h2>Cipher Decoder</h2><span class="tag">Interactive</span><div class="divider"></div>
+  </div>
+
+  <div id="decoder-wrap">
+    <span class="dec-progress-label">⬡ Intercepted Morse Transmission — Decode Each Word</span>
+    <div class="dec-sentence" id="dec-sentence"></div>
+
+    <div class="decoder-cols">
+
+      <!-- Left: Morse clue -->
+      <div class="dec-panel">
+        <div class="dec-panel-label">
+          Intercepted Signal
+          <span class="dec-panel-sublabel" id="morse-word-idx"></span>
+        </div>
+        <div class="morse-display" id="morse-display"></div>
+        <button class="morse-ref-btn" id="morse-ref-btn" onclick="toggleMorseRef()">▼ &nbsp;Morse Code Reference</button>
+        <div id="morse-ref" style="display:none">
+          <div class="morse-ref-grid" id="morse-ref-grid"></div>
+        </div>
+      </div>
+
+      <!-- Right: Wordle -->
+      <div class="dec-panel">
+        <div class="dec-panel-label">
+          Decode Attempt
+          <span class="wordle-counter" id="wordle-counter"></span>
+        </div>
+        <div class="dec-toast" id="dec-toast">&nbsp;</div>
+        <div class="wordle-grid-wrap">
+          <div class="wordle-grid" id="wordle-grid"></div>
+        </div>
+        <div class="dec-keyboard" id="dec-keyboard"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Victory -->
+  <div class="dec-victory" id="decoder-victory" style="display:none">
+    <div style="font-size:3rem;margin-bottom:1rem">🔓</div>
+    <h3>Transmission Decoded</h3>
+    <div class="dec-revealed" id="victory-sentence"></div>
+    <p>You have successfully decoded the intercepted morse transmission.</p>
+    <p style="margin-top:.5rem;color:var(--gold)">Case #472984Z — Evidence logged.</p>
+    <button class="morse-ref-btn" style="max-width:200px;margin:1.5rem auto 0" onclick="decReset()">↺ &nbsp;Play Again</button>
+  </div>
+</div>
+
 <!-- Crime tape bottom -->
 <div class="tape-banner" style="margin-top:3rem;">
   <span class="tape-inner">CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp;</span>
 </div>
 
 <script>
+  let decStarted = false;
   function showSection(name, el) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
     document.getElementById('section-' + name).classList.add('active');
     el.classList.add('active');
+    if (name === 'decoder' && !decStarted) { decStarted = true; decInit(); }
   }
 
   const players = {};
@@ -896,6 +1061,331 @@
   }
 
   ['finnick','gary','gazelle'].forEach(initPlayer);
+
+  /* ═══════════════════════════════════════════════════════════
+     DECODER GAME
+     Sentence: THE FIRST FACE YOU SEE KNOWS MORE THAN YOU THINK
+  ═══════════════════════════════════════════════════════════ */
+  const DEC_WORDS = ['THE','FIRST','FACE','YOU','SEE','KNOWS','MORE','THAN','YOU','THINK'];
+  const MORSE = {
+    A:'.-',  B:'-...',C:'-.-.',D:'-..',E:'.',  F:'..-.',
+    G:'--.',H:'....', I:'..',  J:'.---',K:'-.-',L:'.-..',
+    M:'--', N:'-.',  O:'---', P:'.--.',Q:'--.-',R:'.-.',
+    S:'...', T:'-',  U:'..-', V:'...-',W:'.--',X:'-..-',
+    Y:'-.--',Z:'--..'
+  };
+
+  let dec = {};
+
+  function decInit() {
+    dec = {
+      idx: 0, guesses: [], current: '',
+      state: 'playing',   // 'playing' | 'complete'
+      keyStates: {},
+      solved: new Array(DEC_WORDS.length).fill(false),
+      busy: false
+    };
+    buildMorseRef();
+    decRender();
+  }
+
+  function decReset() {
+    decStarted = false;
+    document.getElementById('decoder-victory').style.display = 'none';
+    document.getElementById('decoder-wrap').style.display = '';
+    decStarted = true;
+    decInit();
+  }
+
+  function decRender() {
+    document.getElementById('decoder-victory').style.display = 'none';
+    document.getElementById('decoder-wrap').style.display = '';
+    renderSentenceBar();
+    renderMorsePanel();
+    renderGrid();
+    renderKeyboard();
+    updateCounter();
+    toast('');
+  }
+
+  /* ── Sentence progress bar ────────────────────── */
+  function renderSentenceBar() {
+    const el = document.getElementById('dec-sentence');
+    el.innerHTML = '';
+    DEC_WORDS.forEach((w, i) => {
+      const chip = document.createElement('div');
+      chip.className = 'dec-word-chip' +
+        (dec.solved[i] ? ' solved' : i === dec.idx ? ' current' : '');
+      chip.textContent = dec.solved[i] ? w : '_ '.repeat(w.length).trim();
+      el.appendChild(chip);
+    });
+  }
+
+  /* ── Morse display ────────────────────────────── */
+  function renderMorsePanel() {
+    const word = DEC_WORDS[dec.idx];
+    document.getElementById('morse-word-idx').textContent =
+      `WORD ${dec.idx + 1} / ${DEC_WORDS.length}`;
+    const container = document.getElementById('morse-display');
+    container.innerHTML = '';
+    word.split('').forEach((ch, i) => {
+      if (i > 0) {
+        const sep = document.createElement('div');
+        sep.className = 'morse-sep'; sep.textContent = '/';
+        container.appendChild(sep);
+      }
+      const cell = document.createElement('div');
+      cell.className = 'morse-char-cell'; cell.id = `mc-${i}`;
+      const syms = document.createElement('div');
+      syms.className = 'morse-symbols';
+      for (const s of MORSE[ch]) {
+        const dot = document.createElement('span');
+        dot.className = s === '.' ? 'm-dot' : 'm-dash';
+        syms.appendChild(dot);
+      }
+      const lbl = document.createElement('div');
+      lbl.className = 'morse-letter-label'; lbl.textContent = ch;
+      lbl.style.visibility = dec.solved[dec.idx] ? 'visible' : 'hidden';
+      cell.appendChild(syms); cell.appendChild(lbl);
+      container.appendChild(cell);
+    });
+  }
+
+  function revealMorseLetters() {
+    DEC_WORDS[dec.idx].split('').forEach((_, i) => {
+      setTimeout(() => {
+        const lbl = document.querySelector(`#mc-${i} .morse-letter-label`);
+        if (lbl) lbl.style.visibility = 'visible';
+      }, i * 160);
+    });
+  }
+
+  /* ── Wordle grid ──────────────────────────────── */
+  function renderGrid() {
+    const grid = document.getElementById('wordle-grid');
+    grid.innerHTML = '';
+    const len = DEC_WORDS[dec.idx].length;
+    for (let r = 0; r < 6; r++) {
+      const row = document.createElement('div');
+      row.className = 'wordle-row'; row.id = `drow-${r}`;
+      for (let c = 0; c < len; c++) {
+        const tile = document.createElement('div');
+        tile.className = 'wordle-tile'; tile.id = `dt-${r}-${c}`;
+        if (r < dec.guesses.length) {
+          const g = dec.guesses[r];
+          tile.textContent = g.letters[c];
+          tile.dataset.state = g.result[c];
+        } else if (r === dec.guesses.length && c < dec.current.length) {
+          tile.textContent = dec.current[c];
+          tile.dataset.state = 'tbd';
+        }
+        row.appendChild(tile);
+      }
+      grid.appendChild(row);
+    }
+  }
+
+  function refreshCurrentRow() {
+    const len = DEC_WORDS[dec.idx].length;
+    const r = dec.guesses.length;
+    for (let c = 0; c < len; c++) {
+      const tile = document.getElementById(`dt-${r}-${c}`);
+      if (!tile) continue;
+      if (c < dec.current.length) {
+        tile.textContent = dec.current[c]; tile.dataset.state = 'tbd';
+      } else {
+        tile.textContent = ''; delete tile.dataset.state;
+      }
+    }
+  }
+
+  /* ── Keyboard ─────────────────────────────────── */
+  function renderKeyboard() {
+    const kb = document.getElementById('dec-keyboard');
+    kb.innerHTML = '';
+    [['Q','W','E','R','T','Y','U','I','O','P'],
+     ['A','S','D','F','G','H','J','K','L'],
+     ['ENTER','Z','X','C','V','B','N','M','⌫']].forEach(row => {
+      const rowEl = document.createElement('div');
+      rowEl.className = 'dec-kb-row';
+      row.forEach(k => {
+        const btn = document.createElement('button');
+        btn.className = 'dec-key' + (k.length > 1 ? ' wide' : '');
+        btn.textContent = k; btn.dataset.key = k;
+        if (dec.keyStates[k]) btn.dataset.state = dec.keyStates[k];
+        btn.addEventListener('click', () => decKey(k));
+        rowEl.appendChild(btn);
+      });
+      kb.appendChild(rowEl);
+    });
+  }
+
+  /* ── Counter & toast ──────────────────────────── */
+  function updateCounter() {
+    const left = 6 - dec.guesses.length;
+    document.getElementById('wordle-counter').textContent =
+      `WORD ${dec.idx + 1} OF ${DEC_WORDS.length} — ${left} ATTEMPT${left === 1 ? '' : 'S'} LEFT`;
+  }
+
+  function toast(msg, type = '') {
+    const el = document.getElementById('dec-toast');
+    el.textContent = msg || '\u00a0';
+    el.className = 'dec-toast' + (type ? ` ${type}` : '');
+  }
+
+  /* ── Key handler ──────────────────────────────── */
+  function decKey(key) {
+    if (dec.state !== 'playing' || dec.busy) return;
+    const word = DEC_WORDS[dec.idx];
+    if (key === '⌫' || key === 'BACKSPACE') {
+      if (dec.current.length > 0) { dec.current = dec.current.slice(0, -1); refreshCurrentRow(); }
+      return;
+    }
+    if (key === 'ENTER') { decSubmit(); return; }
+    if (/^[A-Z]$/.test(key) && dec.current.length < word.length) {
+      dec.current += key;
+      refreshCurrentRow();
+      const tile = document.getElementById(`dt-${dec.guesses.length}-${dec.current.length - 1}`);
+      if (tile) { tile.classList.remove('pop'); void tile.offsetWidth; tile.classList.add('pop'); }
+    }
+  }
+
+  /* ── Submit guess ─────────────────────────────── */
+  function decSubmit() {
+    const word = DEC_WORDS[dec.idx];
+    if (dec.current.length !== word.length) {
+      toast('Not enough letters', 'err');
+      shakeRow(dec.guesses.length);
+      setTimeout(() => toast(''), 1400);
+      return;
+    }
+    const result = evalGuess(dec.current, word);
+    const guess  = { letters: dec.current.split(''), result };
+    dec.current  = '';
+    dec.busy     = true;
+
+    const rowIdx = dec.guesses.length;
+    const DELAY  = 280;
+
+    // Reveal tiles one by one
+    result.forEach((state, c) => {
+      setTimeout(() => {
+        const tile = document.getElementById(`dt-${rowIdx}-${c}`);
+        tile.classList.add('flip');
+        setTimeout(() => { tile.dataset.state = state; tile.classList.remove('flip'); }, DELAY / 2);
+      }, c * DELAY);
+    });
+
+    setTimeout(() => {
+      dec.guesses.push(guess);
+      dec.busy = false;
+
+      // Update key colours
+      result.forEach((state, c) => {
+        const ltr = guess.letters[c];
+        const cur = dec.keyStates[ltr];
+        if (!cur || (cur !== 'correct' && (state === 'correct' || (state === 'present' && cur !== 'correct')))) {
+          dec.keyStates[ltr] = state;
+        }
+      });
+      renderKeyboard();
+      updateCounter();
+
+      const won = result.every(r => r === 'correct');
+
+      if (won) {
+        dec.solved[dec.idx] = true;
+        revealMorseLetters();
+        renderSentenceBar();
+        if (dec.idx === DEC_WORDS.length - 1) {
+          setTimeout(showVictory, 1400);
+        } else {
+          toast(dec.idx === 4 ? '🔎 Halfway there!' : 'Decoded! Next word...', 'ok');
+          setTimeout(advanceWord, 1900);
+        }
+      } else if (dec.guesses.length >= 6) {
+        toast(`The word was ${word}`, 'err');
+        setTimeout(() => {
+          if (dec.idx < DEC_WORDS.length - 1) advanceWord();
+          else showVictory();
+        }, 2400);
+      }
+    }, word.length * DELAY + DELAY);
+  }
+
+  /* ── Evaluate (standard Wordle logic) ────────── */
+  function evalGuess(guess, target) {
+    const res  = Array(guess.length).fill('absent');
+    const tArr = target.split('');
+    const gArr = guess.split('');
+    for (let i = 0; i < gArr.length; i++) {
+      if (gArr[i] === tArr[i]) { res[i] = 'correct'; tArr[i] = null; gArr[i] = null; }
+    }
+    for (let i = 0; i < gArr.length; i++) {
+      if (!gArr[i]) continue;
+      const j = tArr.indexOf(gArr[i]);
+      if (j !== -1) { res[i] = 'present'; tArr[j] = null; }
+    }
+    return res;
+  }
+
+  function shakeRow(r) {
+    document.querySelectorAll(`#drow-${r} .wordle-tile`).forEach(t => {
+      t.classList.remove('shake'); void t.offsetWidth; t.classList.add('shake');
+    });
+  }
+
+  /* ── Advance to next word ─────────────────────── */
+  function advanceWord() {
+    dec.idx++;
+    dec.guesses = []; dec.current = '';
+    dec.state = 'playing'; dec.keyStates = {};
+    toast('');
+    renderSentenceBar();
+    renderMorsePanel();
+    renderGrid();
+    renderKeyboard();
+    updateCounter();
+  }
+
+  /* ── Victory screen ───────────────────────────── */
+  function showVictory() {
+    dec.state = 'complete';
+    document.getElementById('decoder-wrap').style.display = 'none';
+    const el = document.getElementById('decoder-victory');
+    el.style.display = '';
+    document.getElementById('victory-sentence').innerHTML =
+      DEC_WORDS.map(w => `<span>${w}</span>`).join(' ');
+  }
+
+  /* ── Morse reference chart ────────────────────── */
+  function buildMorseRef() {
+    const grid = document.getElementById('morse-ref-grid');
+    if (!grid || grid.children.length) return;
+    Object.entries(MORSE).forEach(([ltr, code]) => {
+      const item = document.createElement('div');
+      item.className = 'morse-ref-item';
+      item.innerHTML = `<span class="ref-letter">${ltr}</span><span>${code}</span>`;
+      grid.appendChild(item);
+    });
+  }
+
+  function toggleMorseRef() {
+    const ref = document.getElementById('morse-ref');
+    const btn = document.getElementById('morse-ref-btn');
+    const open = ref.style.display === 'none';
+    ref.style.display = open ? '' : 'none';
+    btn.textContent = (open ? '▲' : '▼') + ' \u00a0Morse Code Reference';
+  }
+
+  /* ── Physical keyboard support ────────────────── */
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('section-decoder').classList.contains('active')) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === 'Enter')     { decKey('ENTER'); return; }
+    if (e.key === 'Backspace') { decKey('⌫');    return; }
+    if (/^[a-zA-Z]$/.test(e.key)) decKey(e.key.toUpperCase());
+  });
 </script>
 </body>
 </html>
