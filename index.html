@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZPD — Missing Mammal Case File #472984Z</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #111214;
+      --paper:    #f0e8d0;
+      --paper-dk: #d6c9a8;
+      --red:      #c0392b;
+      --red-lt:   #e74c3c;
+      --gold:     #d4a017;
+      --tape:     #f5d020;
+      --text:     #1a1208;
+      --muted:    #5a4e38;
+      --border:   #b5a07a;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      font-family: 'Courier New', Courier, monospace;
+      color: var(--text);
+      min-height: 100vh;
+    }
+    body::before {
+      content: '';
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.04) 2px, rgba(0,0,0,.04) 4px);
+      z-index: 9999;
+    }
+
+    /* ── Nav ───────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: #0a0b0d;
+      border-bottom: 3px solid var(--red);
+      display: flex; align-items: center; padding: 0 2rem;
+    }
+    .nav-brand {
+      font-size: .68rem; letter-spacing: .15em; color: var(--gold);
+      text-transform: uppercase; padding: .8rem 1.5rem .8rem 0;
+      border-right: 1px solid #2a2d33; margin-right: 1.5rem; white-space: nowrap;
+    }
+    .nav-brand span { display: block; font-size: .52rem; color: #666; letter-spacing: .1em; }
+    nav a {
+      color: #999; text-decoration: none; font-size: .63rem; letter-spacing: .15em;
+      text-transform: uppercase; padding: 1rem 1.2rem;
+      border-bottom: 3px solid transparent; margin-bottom: -3px;
+      transition: color .2s, border-color .2s;
+    }
+    nav a:hover, nav a.active { color: #fff; border-color: var(--red); }
+
+    /* ── Crime Tape ────────────────────────────────────────── */
+    .tape-banner { background: var(--tape); overflow: hidden; padding: .35rem 0; white-space: nowrap; }
+    .tape-inner {
+      display: inline-block; animation: scroll-tape 20s linear infinite;
+      font-weight: 900; font-size: .75rem; letter-spacing: .1em; color: #000;
+      font-family: Impact, Arial Black, sans-serif;
+    }
+    @keyframes scroll-tape { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── Page Header ───────────────────────────────────────── */
+    .page-header {
+      background: linear-gradient(160deg, #0d0f12, #1a1c20);
+      padding: 3rem 2rem 2.5rem; text-align: center;
+      border-bottom: 1px solid #2a2d33; position: relative; overflow: hidden;
+    }
+    .page-header::after {
+      content: 'CONFIDENTIAL';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) rotate(-18deg);
+      font-size: 5rem; font-weight: 900; color: rgba(192,57,43,.07);
+      letter-spacing: .3em; pointer-events: none; white-space: nowrap;
+      font-family: Impact, sans-serif;
+    }
+    .dept-badge {
+      display: inline-flex; align-items: center; gap: .75rem;
+      background: var(--red); color: #fff; padding: .4rem 1.2rem; border-radius: 2px;
+      font-size: .6rem; letter-spacing: .2em; text-transform: uppercase;
+      font-weight: 700; margin-bottom: 1rem;
+    }
+    .dept-badge::before { content: '⬡'; font-size: 1rem; }
+    .page-header h1 {
+      font-family: Impact, Arial Black, sans-serif; font-size: 2.5rem;
+      color: #fff; letter-spacing: .05em; text-transform: uppercase; line-height: 1.1;
+    }
+    .page-header h1 em { color: var(--red-lt); font-style: normal; }
+    .case-meta {
+      display: flex; justify-content: center; gap: 2rem; margin-top: 1.2rem; flex-wrap: wrap;
+    }
+    .case-meta-item { font-size: .6rem; letter-spacing: .12em; color: #888; text-transform: uppercase; }
+    .case-meta-item strong { color: var(--gold); display: block; font-size: .75rem; }
+
+    /* ── Sections ──────────────────────────────────────────── */
+    .section { display: none; max-width: 1280px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+    .section.active { display: block; }
+
+    .section-title {
+      display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;
+    }
+    .section-title h2 {
+      font-family: Impact, sans-serif; font-size: 1.5rem; color: #fff;
+      letter-spacing: .1em; text-transform: uppercase; white-space: nowrap;
+    }
+    .section-title .tag {
+      background: var(--red); color: #fff; font-size: .55rem;
+      letter-spacing: .15em; padding: .25rem .6rem; text-transform: uppercase; font-weight: 700;
+    }
+    .divider { flex: 1; height: 1px; background: linear-gradient(to right, #333, transparent); }
+
+    /* ── Paper card ────────────────────────────────────────── */
+    .paper {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 24px rgba(0,0,0,.55), inset 0 0 60px rgba(0,0,0,.04);
+      position: relative; overflow: hidden;
+    }
+
+    /* ── SUSPECTS ──────────────────────────────────────────── */
+    .suspects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .suspect-card { padding: 1.2rem 1.4rem 1.4rem; }
+
+    .suspect-card-top {
+      display: flex; align-items: flex-start; gap: 1rem; margin-bottom: .9rem;
+    }
+
+    /* Polaroid-style photo */
+    .suspect-photo-wrap {
+      flex-shrink: 0;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 5px 5px 18px;
+      box-shadow: 2px 3px 8px rgba(0,0,0,.25);
+      transform: rotate(-2deg);
+      position: relative;
+      width: 110px;
+    }
+    .suspect-photo-wrap:nth-child(odd) { transform: rotate(2deg); }
+    .suspect-photo-wrap img {
+      width: 100px; height: 130px;
+      object-fit: cover; object-position: top center;
+      display: block;
+    }
+    /* Red thumbtack */
+    .suspect-photo-wrap::before {
+      content: '';
+      position: absolute; top: -7px; left: 50%; transform: translateX(-50%);
+      width: 14px; height: 14px;
+      background: radial-gradient(circle at 40% 35%, #f55, var(--red));
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,.4);
+      z-index: 2;
+    }
+
+    .suspect-info { flex: 1; padding-top: .2rem; }
+
+    .suspect-card-header {
+      font-size: .5rem; letter-spacing: .15em; color: var(--muted);
+      text-transform: uppercase; margin-bottom: .35rem;
+      padding-bottom: .35rem; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+    }
+
+    .status {
+      display: inline-block; font-size: .48rem; letter-spacing: .12em;
+      text-transform: uppercase; font-weight: 700; padding: .15rem .45rem;
+      margin-bottom: .3rem;
+    }
+    .status-suspect { background: var(--red); color: #fff; }
+    .status-poi { background: var(--gold); color: #000; }
+
+    .suspect-name {
+      font-family: Impact, sans-serif; font-size: 1.2rem;
+      letter-spacing: .04em; text-transform: uppercase; line-height: 1.1;
+    }
+
+    .suspect-fields {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .4rem .6rem; margin-top: .6rem;
+    }
+    .field-label { font-size: .5rem; letter-spacing: .14em; color: var(--red); text-transform: uppercase; font-weight: 700; display: block; }
+    .field-value { font-size: .75rem; color: var(--text); }
+    .span2 { grid-column: 1 / -1; }
+
+    .plate-badge {
+      display: inline-block; background: #1a1a1a; color: #fff;
+      font-family: 'Courier New', monospace; font-size: .72rem; font-weight: 700;
+      letter-spacing: .2em; padding: .18rem .55rem;
+      border: 2px solid #555; border-radius: 3px; margin-top: .15rem;
+    }
+    .redacted { background: #1a1a1a; color: transparent; border-radius: 1px; }
+
+    /* ── EVIDENCE ──────────────────────────────────────────── */
+    .evidence-label {
+      font-size: .55rem; letter-spacing: .18em; color: var(--red);
+      text-transform: uppercase; font-weight: 700;
+      border-bottom: 1px solid var(--border); padding-bottom: .5rem; margin-bottom: 1rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .exhibit {
+      background: var(--red); color: #fff; padding: .1rem .4rem; font-size: .5rem;
+    }
+
+    /* Photo frame for evidence slides */
+    .evidence-photo-frame {
+      background: #1a1c20;
+      border: 2px solid #2e3035;
+      padding: 6px;
+      box-shadow: 0 6px 28px rgba(0,0,0,.6);
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    .evidence-photo-frame img {
+      width: 100%; height: auto; display: block;
+    }
+    .evidence-photo-frame .cam-label {
+      position: absolute; bottom: 10px; left: 10px;
+      background: rgba(0,0,0,.75); color: #0f0;
+      font-size: .55rem; letter-spacing: .1em; padding: .2rem .5rem;
+      font-family: 'Courier New', monospace;
+    }
+    .evidence-photo-frame .tape-tag {
+      position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+      background: var(--tape); color: #000; font-size: .5rem; font-weight: 700;
+      letter-spacing: .1em; padding: .15rem .7rem; white-space: nowrap;
+      font-family: Impact, sans-serif;
+    }
+
+    /* Pinned photo style for map/paw db */
+    .pinned-photo {
+      position: relative;
+      background: #fff;
+      padding: 8px 8px 28px;
+      box-shadow: 3px 5px 18px rgba(0,0,0,.5);
+      display: block;
+    }
+    .pinned-photo img { width: 100%; height: auto; display: block; }
+    .pinned-photo::before {
+      content: '';
+      position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+      width: 18px; height: 18px;
+      background: radial-gradient(circle at 40% 35%, #f77, var(--red));
+      border-radius: 50%; box-shadow: 0 3px 6px rgba(0,0,0,.5); z-index: 2;
+    }
+    .pinned-photo .photo-caption {
+      position: absolute; bottom: 4px; left: 0; right: 0;
+      text-align: center; font-size: .55rem; letter-spacing: .12em;
+      text-transform: uppercase; color: #888; font-family: 'Courier New', monospace;
+    }
+
+    /* CCTV terminal */
+    .cctv-frame {
+      background: #000; border: 3px solid #222; padding: .8rem 1rem;
+      font-family: 'Courier New', monospace; margin-bottom: 1rem;
+    }
+    .cctv-header {
+      display: flex; align-items: center; gap: .5rem;
+      color: #0f0; font-size: .62rem; letter-spacing: .08em;
+      margin-bottom: .6rem; border-bottom: 1px solid #111; padding-bottom: .4rem;
+    }
+    .cctv-dot { width: 8px; height: 8px; background: #f00; border-radius: 50%; animation: blink 1.2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.2;} }
+    .cctv-body { color: #0f0; font-size: .62rem; line-height: 1.7; }
+    .cctv-hl { color: #ff4; font-weight: 700; }
+    .cctv-ts { color: #0ff; }
+
+    .finding-row {
+      display: flex; align-items: flex-start; gap: .7rem;
+      padding: .55rem 0; border-bottom: 1px dashed var(--paper-dk); font-size: .78rem;
+    }
+    .finding-row:last-child { border-bottom: none; }
+    .finding-num {
+      background: var(--red); color: #fff; width: 20px; height: 20px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: .58rem; font-weight: 700; flex-shrink: 0; margin-top: .1rem;
+    }
+
+    .evidence-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media(max-width:760px){ .evidence-grid { grid-template-columns: 1fr; } }
+    .full { grid-column: 1 / -1; }
+
+    .evidence-card { padding: 1.5rem; }
+
+    /* Map district list */
+    .map-districts {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .5rem 1.5rem;
+      margin-top: .8rem; font-size: .75rem;
+    }
+    .district-item { padding: .4rem 0; border-bottom: 1px dashed var(--paper-dk); }
+    .district-name { font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: .1rem; }
+
+    /* ── TESTIMONIES ───────────────────────────────────────── */
+    .testimony-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem;
+    }
+    .testimony-card { padding: 1.5rem; }
+
+    .testimony-header {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1rem; padding-bottom: .8rem; border-bottom: 2px solid var(--red);
+    }
+
+    /* Small polaroid in testimony card */
+    .t-photo {
+      flex-shrink: 0;
+      background: #fff; padding: 4px 4px 14px;
+      box-shadow: 2px 3px 7px rgba(0,0,0,.3);
+      transform: rotate(-3deg); position: relative;
+      width: 70px;
+    }
+    .t-photo img { width: 62px; height: 80px; object-fit: cover; object-position: top; display: block; }
+    .t-photo::before {
+      content: ''; position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+      width: 11px; height: 11px; background: radial-gradient(circle at 40% 35%, #f55, var(--red));
+      border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,.4); z-index: 2;
+    }
+
+    .witness-info h3 { font-family: Impact, sans-serif; font-size: 1.1rem; text-transform: uppercase; letter-spacing: .04em; }
+    .witness-role { font-size: .58rem; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-top: .15rem; }
+
+    .rec-status {
+      font-size: .52rem; letter-spacing: .12em; text-transform: uppercase;
+      padding: .18rem .5rem; display: inline-block; margin-bottom: .7rem; font-weight: 700;
+    }
+    .rec-available   { background:#1a4a1a; color:#4caf50; border:1px solid #4caf50; }
+    .rec-unavailable { background:#2a1a1a; color:#888;    border:1px solid #444; }
+    .rec-incomplete  { background:#3a2a0a; color:var(--gold); border:1px solid var(--gold); }
+
+    /* Audio player */
+    .audio-player { background:#1a1c20; border:1px solid #2e3035; border-radius:3px; padding:.7rem 1rem; margin-top:.3rem; }
+    .audio-player-label { font-size:.52rem; color:#666; letter-spacing:.1em; text-transform:uppercase; margin-bottom:.5rem; }
+    .audio-controls { display:flex; align-items:center; gap:.7rem; }
+    .play-btn {
+      width:34px; height:34px; background:var(--red); border:none; border-radius:50%;
+      color:#fff; font-size:.85rem; cursor:pointer; display:flex; align-items:center;
+      justify-content:center; flex-shrink:0; transition:background .2s, transform .1s;
+    }
+    .play-btn:hover { background:var(--red-lt); transform:scale(1.06); }
+    .play-btn:active { transform:scale(.96); }
+    .play-btn.playing { background:#444; }
+    .audio-track { flex:1; display:flex; flex-direction:column; gap:.3rem; }
+    .progress-bar { width:100%; height:4px; background:#333; border-radius:2px; cursor:pointer; position:relative; overflow:hidden; }
+    .progress-fill { height:100%; background:var(--red); border-radius:2px; width:0%; transition:width .1s linear; pointer-events:none; }
+    .time-display { display:flex; justify-content:space-between; font-size:.52rem; color:#666; }
+
+    .no-recording { background:#1a1c20; border:1px dashed #2e3035; padding:1rem; text-align:center; font-size:.62rem; color:#555; letter-spacing:.1em; text-transform:uppercase; margin-top:.4rem; }
+    .incomplete-note { font-size:.58rem; color:var(--gold); letter-spacing:.07em; margin-top:.5rem; display:flex; align-items:center; gap:.35rem; }
+    .incomplete-note::before { content:'⚠'; }
+    .transcript-note { margin-top:.65rem; font-size:.63rem; color:var(--muted); padding:.45rem .7rem; background:rgba(0,0,0,.05); border-left:3px solid var(--gold); font-style:italic; line-height:1.6; }
+
+    /* ── Overview ──────────────────────────────────────────── */
+    .overview-grid { display:grid; grid-template-columns:2fr 1fr; gap:1.5rem; }
+    @media(max-width:760px){ .overview-grid { grid-template-columns:1fr; } }
+    .overview-body { padding:1.5rem; font-size:.82rem; line-height:1.85; }
+    .overview-body p { margin-bottom:1rem; }
+    .case-stats { padding:1.5rem; }
+    .stat-item { padding:.7rem 0; border-bottom:1px dashed var(--paper-dk); }
+    .stat-item:last-child { border-bottom:none; }
+    .s-label { font-size:.52rem; letter-spacing:.14em; color:var(--red); text-transform:uppercase; font-weight:700; }
+    .s-val { font-size:.92rem; font-weight:700; margin-top:.1rem; }
+    .stamp {
+      display:inline-block; border:3px solid var(--red); color:var(--red);
+      padding:.3rem .8rem; font-size:.58rem; letter-spacing:.25em; text-transform:uppercase;
+      font-weight:900; transform:rotate(-8deg); opacity:.65; margin-top:1rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Crime tape top -->
+<div class="tape-banner">
+  <span class="tape-inner">CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp;</span>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-brand">ZPD / LEO <span>Suntopia Police Department</span></div>
+  <a href="#" class="active" onclick="showSection('overview',this);return false;">Overview</a>
+  <a href="#" onclick="showSection('suspects',this);return false;">Suspects</a>
+  <a href="#" onclick="showSection('evidence',this);return false;">Evidence</a>
+  <a href="#" onclick="showSection('testimonies',this);return false;">Testimonies</a>
+</nav>
+
+<!-- Header -->
+<div class="page-header">
+  <div class="dept-badge">Suntopia Police Department</div>
+  <h1>Missing Mammal <em>Investigation</em></h1>
+  <div class="case-meta">
+    <div class="case-meta-item"><strong>CASE #472984Z</strong>File Reference</div>
+    <div class="case-meta-item"><strong>CLASSIFICATION</strong>Top Secret — Confidential</div>
+    <div class="case-meta-item"><strong>STATUS</strong>Active — Ongoing</div>
+    <div class="case-meta-item"><strong>JURISDICTION</strong>Suntopia Metro</div>
+    <div class="case-meta-item"><strong>SUSPECTS</strong>7 Identified</div>
+  </div>
+</div>
+
+<!-- ═══════════ OVERVIEW ═══════════ -->
+<div id="section-overview" class="section active">
+  <div class="section-title">
+    <h2>Case Overview</h2><span class="tag">Active</span><div class="divider"></div>
+  </div>
+  <div class="overview-grid">
+    <div class="paper overview-body">
+      <p><strong>CASE SUMMARY —</strong> A series of mammal disappearances have been reported across multiple districts of Suntopia. Victims were last seen in the Rainforest District, Tundratown, Downtown, Savanna Central, Canyonlands, and surrounding areas. All missing individuals appear to be predator-type mammals.</p>
+      <p>CCTV footage recovered from <strong>Rainforest District CAM+097</strong> at timestamp <strong>11:29:42</strong> shows suspicious paw print activity and unidentified claw markings on pavement. Two distinct footprint types have been identified at the scene.</p>
+      <p>Seven persons of interest have been identified and profiled. Vehicle registration plates have been partially redacted pending further authorisation. Audio testimony has been collected from three witnesses — recordings are incomplete and under active analysis.</p>
+      <p>Paw print samples from all seven suspects have been logged in the Suntopia Paw Print Database for forensic cross-referencing against CCTV evidence.</p>
+      <div class="stamp">Top Secret</div>
+    </div>
+    <div class="paper case-stats">
+      <div class="stat-item"><div class="s-label">Case Number</div><div class="s-val">#472984Z</div></div>
+      <div class="stat-item"><div class="s-label">Incident Type</div><div class="s-val">Missing Mammals</div></div>
+      <div class="stat-item"><div class="s-label">Suspects Identified</div><div class="s-val">7</div></div>
+      <div class="stat-item"><div class="s-label">CCTV Sources</div><div class="s-val">1 (CAM+097)</div></div>
+      <div class="stat-item"><div class="s-label">Footprint Types</div><div class="s-val">2 Identified</div></div>
+      <div class="stat-item"><div class="s-label">Audio Recordings</div><div class="s-val">3 (Incomplete)</div></div>
+      <div class="stat-item"><div class="s-label">Investigative Unit</div><div class="s-val">ZPD / LEO</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SUSPECTS ═══════════ -->
+<div id="section-suspects" class="section">
+  <div class="section-title">
+    <h2>Profiles of Suspects</h2><span class="tag">7 Identified</span><div class="divider"></div>
+  </div>
+
+  <div class="suspects-grid">
+
+    <!-- Clawhauser -->
+    <div class="paper suspect-card">
+      <div class="suspect-card-header"><span>Suspect List — Missing Mammal Case</span><span>#472984Z</span></div>
+      <div class="suspect-card-top">
+        <div class="suspect-photo-wrap">
+          <img src="assets/char_clawhauser.jpeg" alt="Benjamin Clawhauser" />
+        </div>
+        <div class="suspect-info">
+          <span class="status status-poi">Person of Interest</span>
+          <div class="suspect-name">Benjamin<br>Clawhauser</div>
+          <div class="suspect-fields">
+            <div><span class="field-label">Height</span><span class="field-value">159 cm</span></div>
+            <div><span class="field-label">Species</span><span class="field-value">Cheetah</span></div>
+            <div class="span2"><span class="field-label">Career</span><span class="field-value">Front Desk Receptionist</span></div>
+            <div class="span2"><span class="field-label">Vehicle Plate</span><br><span class="plate-badge">S<span class="redacted">XXXXX</span>E</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Finnick -->
+    <div class="paper suspect-card">
+      <div class="suspect-card-header"><span>Suspect List — Missing Mammal Case</span><span>#472984Z</span></div>
+      <div class="suspect-card-top">
+        <div class="suspect-photo-wrap" style="transform:rotate(2deg)">
+          <img src="assets/char_finnick.jpeg" alt="Finnick" />
+        </div>
+        <div class="suspect-info">
+          <span class="status status-suspect">Suspect</span>
+          <div class="suspect-name">Finnick</div>
+          <div class="suspect-fields">
+            <div><span class="field-label">Height</span><span class="field-value">43 cm</span></div>
+            <div><span class="field-label">Species</span><span class="field-value">Fennec Fox</span></div>
+            <div class="span2"><span class="field-label">Career</span><span class="field-value">Street hustler — illegal activities</span></div>
+            <div class="span2"><span class="field-label">Vehicle Plate</span><br><span class="plate-badge">S<span class="redacted">XXXXX</span>E</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gazelle -->
+    <div class="paper suspect-card">
+      <div class="suspect-card-header"><span>Suspect List — Missing Mammal Case</span><span>#472984Z</span></div>
+      <div class="suspect-card-top">
+        <div class="suspect-photo-wrap">
+          <img src="assets/char_gazelle.jpeg" alt="Gazelle" />
+        </div>
+        <div class="suspect-info">
+          <span class="status status-poi">Person of Interest</span>
+          <div class="suspect-name">Gazelle</div>
+          <div class="suspect-fields">
+            <div><span class="field-label">Height</span><span class="field-value">167 cm</span></div>
+            <div><span class="field-label">Species</span><span class="field-value">Gazelle</span></div>
+            <div class="span2"><span class="field-label">Career</span><span class="field-value">Pop Star</span></div>
+            <div class="span2"><span class="field-label">Vehicle Plate</span><br><span class="plate-badge">S<span class="redacted">XXXXX</span>D</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dr. Badger -->
+    <div class="paper suspect-card">
+      <div class="suspect-card-header"><span>Suspect List — Missing Mammal Case</span><span>#472984Z</span></div>
+      <div class="suspect-card-top">
+        <div class="suspect-photo-wrap" style="transform:rotate(2deg)">
+          <img src="assets/char_dr_badger.jpeg" alt="Dr. Badger" />
+        </div>
+        <div class="suspect-info">
+          <span class="status status-suspect">Suspect</span>
+          <div class="suspect-name">Dr. Badger</div>
+          <div class="suspect-fields">
+            <div><span class="field-label">Height</span><span class="field-value">91 cm</span></div>
+            <div><span class="field-label">Species</span><span class="field-value">Badger</span></div>
+            <div class="span2"><span class="field-label">Career</span><span class="field-value">Medical Professional</span></div>
+            <div class="span2"><span class="field-label">Vehicle Plate</span><br><span class="plate-badge">S<span class="redacted">XXXX</span>J</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mr Big -->
+    <div class="paper suspect-card">
+      <div class="suspect-card-header"><span>Suspect List — Missing Mammal Case</span><span>#472984Z</span></div>
+      <div class="suspect-card-top">
+        <div class="suspect-photo-wrap">
+          <img src="assets/char_mr_big.jpeg" alt="Mr. Big" />
+        </div>
+        <div class="suspect-info">
+          <span class="status status-suspect">Suspect</span>
+          <div class="suspect-name">Mr. Big</div>
+          <div class="suspect-fields">
+            <div><span class="field-label">Height</span><span class="field-value">20 cm</span></div>
+            <div><span class="field-label">Species</span><span class="field-value">Arctic Shrew</span></div>
+            <div class="span2"><span class="field-label">Career</span><span class="field-value">Head of Tundratown Mafia</span></div>
+            <div class="span2"><span class="field-label">Vehicle Plate</span><br><span class="plate-badge">S<span class="redacted">XXXXX</span>M</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gary -->
+    <div class="paper suspect-card">
+      <div class="suspect-card-header"><span>Suspect List — Missing Mammal Case</span><span>#472984Z</span></div>
+      <div class="suspect-card-top">
+        <div class="suspect-photo-wrap" style="transform:rotate(2deg)">
+          <img src="assets/char_gary.jpeg" alt="Gary" />
+        </div>
+        <div class="suspect-info">
+          <span class="status status-poi">Person of Interest</span>
+          <div class="suspect-name">Gary</div>
+          <div class="suspect-fields">
+            <div><span class="field-label">Height</span><span class="field-value">167 cm</span></div>
+            <div><span class="field-label">Species</span><span class="field-value">Wolf</span></div>
+            <div class="span2"><span class="field-label">Career</span><span class="field-value">Security Guard</span></div>
+            <div class="span2"><span class="field-label">Vehicle Plate</span><br><span class="plate-badge">S<span class="redacted">XXXXX</span>E</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mayor Lionheart -->
+    <div class="paper suspect-card">
+      <div class="suspect-card-header"><span>Suspect List — Missing Mammal Case</span><span>#472984Z</span></div>
+      <div class="suspect-card-top">
+        <div class="suspect-photo-wrap">
+          <img src="assets/char_mayor_lionheart.jpeg" alt="Mayor Lionheart" />
+        </div>
+        <div class="suspect-info">
+          <span class="status status-suspect">Suspect</span>
+          <div class="suspect-name">Mayor<br>Lionheart</div>
+          <div class="suspect-fields">
+            <div><span class="field-label">Height</span><span class="field-value">190 cm</span></div>
+            <div><span class="field-label">Species</span><span class="field-value">Lion</span></div>
+            <div class="span2"><span class="field-label">Career</span><span class="field-value">Mayor of Suntopia</span></div>
+            <div class="span2"><span class="field-label">Vehicle Plate</span><br><span class="plate-badge">S<span class="redacted">XXXXX</span>J</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /suspects-grid -->
+</div>
+
+<!-- ═══════════ EVIDENCE ═══════════ -->
+<div id="section-evidence" class="section">
+  <div class="section-title">
+    <h2>Physical Evidence</h2><span class="tag">3 Exhibits</span><div class="divider"></div>
+  </div>
+
+  <div class="evidence-grid">
+
+    <!-- EXHIBIT A — CCTV -->
+    <div class="paper evidence-card">
+      <div class="evidence-label">CCTV Footage <span class="exhibit">EXHIBIT A</span></div>
+
+      <!-- Terminal readout -->
+      <div class="cctv-frame">
+        <div class="cctv-header">
+          <span class="cctv-dot"></span>
+          SUNTOPIA TRAFFIC NETWORK — REGIONAL CAMERA DATA SHARING
+        </div>
+        <div class="cctv-body">
+          <div>CAMERA: <span class="cctv-hl">RAINFOREST DISTRICT CAM+097</span></div>
+          <div>TIME: <span class="cctv-ts">11:29:42</span> &nbsp;|&nbsp; MODE: NIGHT</div>
+          <div>STATUS: <span class="cctv-hl">ANOMALY DETECTED — 2 FOOTPRINT TYPES</span></div>
+        </div>
+      </div>
+
+      <!-- Actual CCTV image -->
+      <div class="evidence-photo-frame">
+        <span class="tape-tag">EVIDENCE — DO NOT TAMPER</span>
+        <img src="assets/evidence_cctv.jpeg" alt="CCTV Footage — Rainforest District CAM+097" />
+        <span class="cam-label">■ REC &nbsp; RAINFOREST DISTRICT CAM+097 &nbsp; 11:29:42</span>
+      </div>
+
+      <!-- Findings -->
+      <div class="finding-row">
+        <span class="finding-num">!</span>
+        <div><strong>Claw markings</strong> — deep parallel scratches on pavement surface (circled in red). Consistent with large predator claws.</div>
+      </div>
+      <div class="finding-row">
+        <span class="finding-num">1</span>
+        <div><strong>Footprint Type 1</strong> — 5 toes, large central pad, visible claw impressions. Bear / mustelid.</div>
+      </div>
+      <div class="finding-row">
+        <span class="finding-num">2</span>
+        <div><strong>Footprint Type 2</strong> — 4 toes, rounded pads, no claw marks. Trail of 4 prints visible. Canid / feline.</div>
+      </div>
+    </div>
+
+    <!-- EXHIBIT B — MAP -->
+    <div class="paper evidence-card">
+      <div class="evidence-label">Map of Missing Mammals <span class="exhibit">EXHIBIT B</span></div>
+
+      <div style="padding:1.5rem 1rem 1rem; background:#2a2217; margin-bottom:1rem;">
+        <div class="pinned-photo">
+          <img src="assets/evidence_map.jpeg" alt="Map of Missing Mammals — Suntopia" />
+          <span class="photo-caption">Map of Missing Mammals — Suntopia Metro</span>
+        </div>
+      </div>
+
+      <div style="font-size:.72rem; line-height:1.6; color:var(--muted); margin-bottom:.5rem; font-style:italic;">
+        Red string connects last-known locations of all missing mammals across districts.
+      </div>
+
+      <div class="map-districts">
+        <div class="district-item"><div class="district-name">Rainforest District</div>2 mammals — CCTV CAM+097 located here</div>
+        <div class="district-item"><div class="district-name">Tundratown</div>2 mammals — Mr. Big's territory</div>
+        <div class="district-item"><div class="district-name">Downtown</div>3 mammals — central hub</div>
+        <div class="district-item"><div class="district-name">Savanna Central</div>Multiple — connected to all districts</div>
+        <div class="district-item"><div class="district-name">Canyonlands</div>Multiple — trail to Polar Strait</div>
+        <div class="district-item"><div class="district-name">Highlands / Polar Strait</div>Outer district disappearances</div>
+      </div>
+    </div>
+
+    <!-- EXHIBIT C — PAW PRINT DATABASE (full width) -->
+    <div class="paper evidence-card full">
+      <div class="evidence-label">Suntopia Paw Print Database <span class="exhibit">EXHIBIT C</span></div>
+
+      <div style="padding:1.5rem; background:#1e2530; margin-bottom:1rem;">
+        <div class="pinned-photo">
+          <img src="assets/evidence_pawdb.jpeg" alt="Suntopia Paw Print Database" />
+          <span class="photo-caption">Suntopia Paw Print Database — All Suspects Cross-Referenced</span>
+        </div>
+      </div>
+
+      <div style="font-size:.72rem; line-height:1.6; color:var(--muted); font-style:italic;">
+        Official paw-print registry. Each suspect's print has been catalogued for forensic comparison
+        against footprints recovered from Rainforest District CAM+097 (Exhibit A).
+      </div>
+    </div>
+
+  </div><!-- /evidence-grid -->
+</div>
+
+<!-- ═══════════ TESTIMONIES ═══════════ -->
+<div id="section-testimonies" class="section">
+  <div class="section-title">
+    <h2>Witness Testimonies</h2><span class="tag">Audio Recordings</span><div class="divider"></div>
+  </div>
+
+  <p style="color:#777;font-size:.68rem;letter-spacing:.1em;margin-bottom:1.5rem;text-transform:uppercase;">
+    ⚠ &nbsp;All recordings are partial and under active analysis. Contents are classified.
+  </p>
+
+  <div class="testimony-grid">
+
+    <!-- Finnick -->
+    <div class="paper testimony-card">
+      <div class="testimony-header">
+        <div class="t-photo"><img src="assets/char_finnick.jpeg" alt="Finnick" /></div>
+        <div class="witness-info">
+          <h3>Finnick</h3>
+          <div class="witness-role">Street Hustler · Fennec Fox · 43 cm</div>
+        </div>
+      </div>
+      <span class="rec-status rec-incomplete">⬤ Recording Incomplete</span>
+      <div class="audio-player">
+        <div class="audio-player-label">Recording — Suspect Testimony / ZPD Interview Room</div>
+        <div class="audio-controls">
+          <button class="play-btn" onclick="togglePlay('finnick')">▶</button>
+          <div class="audio-track">
+            <div class="progress-bar" onclick="seek(event,'finnick')" id="bar-finnick"><div class="progress-fill" id="fill-finnick"></div></div>
+            <div class="time-display"><span id="cur-finnick">0:00</span><span id="dur-finnick">--:--</span></div>
+          </div>
+        </div>
+      </div>
+      <audio id="audio-finnick" src="Finnick(y) Voice.mp3"></audio>
+      <div class="incomplete-note">Recording cuts off — remainder of statement unavailable</div>
+      <div class="transcript-note">
+        Finnick's account of his whereabouts during the reported disappearances. Partial recording recovered from ZPD interview room. Statement abruptly ends before completion.
+      </div>
+    </div>
+
+    <!-- Gary -->
+    <div class="paper testimony-card">
+      <div class="testimony-header">
+        <div class="t-photo" style="transform:rotate(2deg)"><img src="assets/char_gary.jpeg" alt="Gary" /></div>
+        <div class="witness-info">
+          <h3>Gary</h3>
+          <div class="witness-role">Security Guard · Wolf · 167 cm</div>
+        </div>
+      </div>
+      <span class="rec-status rec-incomplete">⬤ Recording Incomplete</span>
+      <div class="audio-player">
+        <div class="audio-player-label">Recording — Suspect Testimony / ZPD Interview Room</div>
+        <div class="audio-controls">
+          <button class="play-btn" onclick="togglePlay('gary')">▶</button>
+          <div class="audio-track">
+            <div class="progress-bar" onclick="seek(event,'gary')" id="bar-gary"><div class="progress-fill" id="fill-gary"></div></div>
+            <div class="time-display"><span id="cur-gary">0:00</span><span id="dur-gary">--:--</span></div>
+          </div>
+        </div>
+      </div>
+      <audio id="audio-gary" src="Gary Voice.mp3"></audio>
+      <div class="incomplete-note">Recording cuts off — remainder of statement unavailable</div>
+      <div class="transcript-note">
+        Gary's account as security guard — observations during the disappearance window. Truncated recording. Cross-reference with Rainforest District CCTV (Exhibit A).
+      </div>
+    </div>
+
+    <!-- Gazelle -->
+    <div class="paper testimony-card">
+      <div class="testimony-header">
+        <div class="t-photo"><img src="assets/char_gazelle.jpeg" alt="Gazelle" /></div>
+        <div class="witness-info">
+          <h3>Gazelle</h3>
+          <div class="witness-role">Pop Star · Gazelle · 167 cm</div>
+        </div>
+      </div>
+      <span class="rec-status rec-incomplete">⬤ Recording Incomplete</span>
+      <div class="audio-player">
+        <div class="audio-player-label">Recording — Suspect Testimony / ZPD Interview Room</div>
+        <div class="audio-controls">
+          <button class="play-btn" onclick="togglePlay('gazelle')">▶</button>
+          <div class="audio-track">
+            <div class="progress-bar" onclick="seek(event,'gazelle')" id="bar-gazelle"><div class="progress-fill" id="fill-gazelle"></div></div>
+            <div class="time-display"><span id="cur-gazelle">0:00</span><span id="dur-gazelle">--:--</span></div>
+          </div>
+        </div>
+      </div>
+      <audio id="audio-gazelle" src="gazelle voice.mp3"></audio>
+      <div class="incomplete-note">Recording cuts off — remainder of statement unavailable</div>
+      <div class="transcript-note">
+        Gazelle's testimony as a high-profile public figure with wide visibility across Suntopia. Partial recording. May relate to public appearances near affected districts.
+      </div>
+    </div>
+
+    <!-- Clawhauser — no recording -->
+    <div class="paper testimony-card">
+      <div class="testimony-header">
+        <div class="t-photo" style="transform:rotate(-2deg)"><img src="assets/char_clawhauser.jpeg" alt="Benjamin Clawhauser" /></div>
+        <div class="witness-info">
+          <h3>B. Clawhauser</h3>
+          <div class="witness-role">Receptionist · Cheetah · 159 cm</div>
+        </div>
+      </div>
+      <span class="rec-status rec-unavailable">⬤ No Recording Available</span>
+      <div class="no-recording">Audio testimony not yet obtained<br><span style="font-size:.5rem;display:block;margin-top:.25rem;">— Interview pending —</span></div>
+      <div class="transcript-note">As front desk receptionist, Clawhauser may hold critical visitor access logs. Interview yet to be conducted.</div>
+    </div>
+
+    <!-- Dr Badger — no recording -->
+    <div class="paper testimony-card">
+      <div class="testimony-header">
+        <div class="t-photo"><img src="assets/char_dr_badger.jpeg" alt="Dr. Badger" /></div>
+        <div class="witness-info">
+          <h3>Dr. Badger</h3>
+          <div class="witness-role">Medical Professional · Badger · 91 cm</div>
+        </div>
+      </div>
+      <span class="rec-status rec-unavailable">⬤ No Recording Available</span>
+      <div class="no-recording">Audio testimony not yet obtained<br><span style="font-size:.5rem;display:block;margin-top:.25rem;">— Interview pending —</span></div>
+      <div class="transcript-note">Dr. Badger's medical background raises questions about potential involvement. Interview pending clearance.</div>
+    </div>
+
+    <!-- Mr Big — declined -->
+    <div class="paper testimony-card">
+      <div class="testimony-header">
+        <div class="t-photo" style="transform:rotate(2deg)"><img src="assets/char_mr_big.jpeg" alt="Mr. Big" /></div>
+        <div class="witness-info">
+          <h3>Mr. Big</h3>
+          <div class="witness-role">Head of Tundratown Mafia · Shrew · 20 cm</div>
+        </div>
+      </div>
+      <span class="rec-status rec-unavailable">⬤ No Recording Available</span>
+      <div class="no-recording">Subject declined — legal counsel invoked<br><span style="font-size:.5rem;display:block;margin-top:.25rem;">— Status: Non-cooperative —</span></div>
+      <div class="transcript-note">Mr. Big invoked legal counsel and refused to provide a recorded statement. All associates also unresponsive.</div>
+    </div>
+
+    <!-- Mayor Lionheart — restricted -->
+    <div class="paper testimony-card">
+      <div class="testimony-header">
+        <div class="t-photo"><img src="assets/char_mayor_lionheart.jpeg" alt="Mayor Lionheart" /></div>
+        <div class="witness-info">
+          <h3>Mayor Lionheart</h3>
+          <div class="witness-role">Mayor of Suntopia · Lion · 190 cm</div>
+        </div>
+      </div>
+      <span class="rec-status rec-unavailable">⬤ No Recording Available</span>
+      <div class="no-recording">Diplomatically restricted — statement withheld<br><span style="font-size:.5rem;display:block;margin-top:.25rem;">— Status: Restricted Access —</span></div>
+      <div class="transcript-note">Mayor Lionheart's office cited mayoral privilege. A formal written statement was submitted but recorded testimony remains unavailable.</div>
+    </div>
+
+  </div><!-- /testimony-grid -->
+</div>
+
+<!-- Crime tape bottom -->
+<div class="tape-banner" style="margin-top:3rem;">
+  <span class="tape-inner">CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp; CRIME SCENE DO NOT CROSS &nbsp;·&nbsp;</span>
+</div>
+
+<script>
+  function showSection(name, el) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    document.getElementById('section-' + name).classList.add('active');
+    el.classList.add('active');
+  }
+
+  const players = {};
+
+  function initPlayer(id) {
+    const audio = document.getElementById('audio-' + id);
+    if (!audio) return;
+    players[id] = audio;
+    audio.addEventListener('timeupdate', () => updateProgress(id));
+    audio.addEventListener('loadedmetadata', () => {
+      document.getElementById('dur-' + id).textContent = formatTime(audio.duration);
+    });
+    audio.addEventListener('ended', () => {
+      const btn = document.querySelector(`[onclick="togglePlay('${id}')"]`);
+      btn.textContent = '▶'; btn.classList.remove('playing');
+    });
+  }
+
+  function togglePlay(id) {
+    if (!players[id]) initPlayer(id);
+    const audio = players[id];
+    const btn = document.querySelector(`[onclick="togglePlay('${id}')"]`);
+    Object.keys(players).forEach(k => {
+      if (k !== id && players[k] && !players[k].paused) {
+        players[k].pause();
+        const b = document.querySelector(`[onclick="togglePlay('${k}')"]`);
+        b.textContent = '▶'; b.classList.remove('playing');
+      }
+    });
+    if (audio.paused) {
+      audio.play().catch(() => {});
+      btn.textContent = '⏸'; btn.classList.add('playing');
+    } else {
+      audio.pause();
+      btn.textContent = '▶'; btn.classList.remove('playing');
+    }
+  }
+
+  function updateProgress(id) {
+    const audio = players[id];
+    if (!audio) return;
+    const pct = (audio.currentTime / audio.duration) * 100 || 0;
+    document.getElementById('fill-' + id).style.width = pct + '%';
+    document.getElementById('cur-' + id).textContent = formatTime(audio.currentTime);
+  }
+
+  function seek(e, id) {
+    if (!players[id]) initPlayer(id);
+    const audio = players[id];
+    const bar = document.getElementById('bar-' + id);
+    const rect = bar.getBoundingClientRect();
+    audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+  }
+
+  function formatTime(s) {
+    if (!s || isNaN(s)) return '0:00';
+    return `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
+  }
+
+  ['finnick','gary','gazelle'].forEach(initPlayer);
+</script>
+</body>
+</html>
