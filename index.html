@@ -415,6 +415,9 @@
     .fitb-tile.wrong   { animation: fitb-wrong .42s ease; }
     @keyframes fitb-wrong { 0%,100%{background:#1c1e24;border-color:#3a3d42;} 50%{background:#5a1a1a;border-color:var(--red-lt);} }
 
+    .morse-ref-missing { opacity: .35; }
+    .ref-unavail { font-size: .5rem; color: #555; font-style: italic; letter-spacing: .04em; }
+
     /* Morse ref panel */
     .dec-panel { background: #16181d; border: 1px solid #2a2d33; padding: 1.2rem 1.5rem; }
     .morse-ref-btn {
@@ -1275,13 +1278,21 @@
       FITB_WORDS.map(w => `<span>${w}</span>`).join(' ');
   }
 
+  // Letters missing from the PDF's morse reference
+  const MORSE_REF_MISSING = new Set(['A','E','H','I','M','N','O','S','T']);
+
   function buildMorseRef() {
     const grid = document.getElementById('morse-ref-grid');
     if (!grid || grid.children.length) return;
     Object.entries(MORSE).forEach(([ltr, code]) => {
       const item = document.createElement('div');
       item.className = 'morse-ref-item';
-      item.innerHTML = `<span class="ref-letter">${ltr}</span><span>${code}</span>`;
+      if (MORSE_REF_MISSING.has(ltr)) {
+        item.classList.add('morse-ref-missing');
+        item.innerHTML = `<span class="ref-letter">${ltr}</span><span class="ref-unavail">— unavailable —</span>`;
+      } else {
+        item.innerHTML = `<span class="ref-letter">${ltr}</span><span>${code}</span>`;
+      }
       grid.appendChild(item);
     });
   }
