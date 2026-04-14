@@ -385,105 +385,51 @@
     /* ── DECODER ──────────────────────────────────────────────── */
     #section-decoder { color: #fff; }
 
-    .dec-progress-label {
-      font-size: .6rem; letter-spacing: .2em; color: var(--gold);
-      text-transform: uppercase; margin-bottom: .8rem; display: block; text-align: center;
-    }
-    .dec-sentence {
-      display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem;
-    }
-    .dec-word-chip {
-      padding: .3rem .8rem; background: #1c1e22; border: 1px solid #2e3035;
-      border-radius: 2px; font-size: .72rem; letter-spacing: .08em;
-      text-transform: uppercase; color: #444; transition: all .4s; font-family: 'Courier New', monospace;
-    }
-    .dec-word-chip.current  { border-color: var(--gold); color: var(--gold); }
-    .dec-word-chip.solved   { background: #1a3a1a; border-color: #4a8a4a; color: #7cba7c; }
+    /* Progress bar */
+    .fitb-progress-wrap { text-align: center; margin-bottom: 2rem; }
+    .fitb-progress-label { font-size: .6rem; letter-spacing: .15em; color: #888; text-transform: uppercase; margin-bottom: .6rem; }
+    .fitb-progress-label span { color: var(--gold); font-weight: 700; font-size: .75rem; }
+    .fitb-bar-track { height: 5px; background: #2a2d33; border-radius: 3px; max-width: 320px; margin: 0 auto; }
+    .fitb-bar-fill  { height: 100%; background: linear-gradient(to right, var(--gold), #4caf50); border-radius: 3px; width: 0%; transition: width .35s ease; }
 
-    .decoder-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
-    @media(max-width:800px){ .decoder-cols { grid-template-columns: 1fr; } }
+    /* Sentence layout */
+    .fitb-sentence { display: flex; flex-wrap: wrap; gap: 1rem 1.8rem; justify-content: center; margin: 1.5rem 0 2rem; }
+    .fitb-word     { display: flex; flex-direction: column; align-items: center; }
+    .fitb-letters  { display: flex; gap: 5px; }
+    .fitb-cell     { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+    .fitb-morse    { display: flex; gap: 2px; align-items: center; min-height: 10px; min-width: 8px; }
+    .fitb-dot      { width: 7px; height: 7px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+    .fitb-dash     { width: 17px; height: 7px; background: var(--gold); border-radius: 2px; flex-shrink: 0; }
 
-    .dec-panel { background: #16181d; border: 1px solid #2a2d33; padding: 1.5rem; }
-    .dec-panel-label {
-      font-size: .55rem; letter-spacing: .2em; color: var(--red); text-transform: uppercase;
-      font-weight: 700; border-bottom: 1px solid #2a2d33; padding-bottom: .5rem;
-      margin-bottom: 1.2rem; display: flex; justify-content: space-between; align-items: center;
+    /* Input tile */
+    .fitb-tile {
+      width: 38px; height: 38px; background: #1c1e24; border: 2px solid #3a3d42;
+      color: #fff; text-align: center; text-transform: uppercase;
+      font-size: 1.1rem; font-weight: 900; font-family: 'Courier New', monospace;
+      outline: none; caret-color: transparent; -webkit-appearance: none;
+      border-radius: 0; transition: border-color .15s, background .15s;
+      cursor: pointer; -webkit-tap-highlight-color: transparent; padding: 0;
     }
-    .dec-panel-sublabel { color: #777; font-size: .5rem; }
+    .fitb-tile:focus   { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(212,160,23,.25); background: #1e2028; }
+    .fitb-tile.correct { background: #538d4e !important; border-color: #538d4e !important; color: #fff; cursor: default; }
+    .fitb-tile.wrong   { animation: fitb-wrong .42s ease; }
+    @keyframes fitb-wrong { 0%,100%{background:#1c1e24;border-color:#3a3d42;} 50%{background:#5a1a1a;border-color:var(--red-lt);} }
 
-    /* Morse display */
-    .morse-display {
-      display: flex; gap: .6rem; flex-wrap: wrap; justify-content: center;
-      padding: 1.2rem .5rem; min-height: 90px; align-items: center;
-      background: #0d0f12; border: 1px solid #1e2025; margin-bottom: 1rem;
-    }
-    .morse-char-cell { display: flex; flex-direction: column; align-items: center; gap: .6rem; }
-    .morse-symbols   { display: flex; gap: 4px; align-items: center; min-height: 12px; }
-    .m-dot  { width: 10px; height: 10px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
-    .m-dash { width: 26px; height: 10px; background: var(--gold); border-radius: 3px; flex-shrink: 0; }
-    .morse-letter-label {
-      font-size: .75rem; font-weight: 700; color: #4caf50;
-      font-family: 'Courier New', monospace; letter-spacing: .1em; min-height: 1em;
-    }
-    .morse-sep { color: #333; font-size: 1.1rem; align-self: flex-start; padding-top: .1rem; }
-
+    /* Morse ref panel */
+    .dec-panel { background: #16181d; border: 1px solid #2a2d33; padding: 1.2rem 1.5rem; }
     .morse-ref-btn {
-      background: none; border: 1px solid #2e3035; color: #777;
-      font-size: .52rem; letter-spacing: .12em; text-transform: uppercase;
-      padding: .35rem .7rem; cursor: pointer; font-family: 'Courier New', monospace;
+      background: none; border: 1px solid #2e3035; color: #777; font-size: .52rem;
+      letter-spacing: .12em; text-transform: uppercase; padding: .35rem .7rem;
+      cursor: pointer; font-family: 'Courier New', monospace;
       transition: border-color .2s, color .2s; display: block; width: 100%;
     }
     .morse-ref-btn:hover { border-color: var(--gold); color: var(--gold); }
     .morse-ref-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: .3rem;
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: .3rem;
       margin-top: .75rem; padding-top: .75rem; border-top: 1px solid #2a2d33;
-      max-height: 260px; overflow-y: auto;
     }
     .morse-ref-item { display: flex; align-items: center; gap: .4rem; padding: .2rem .3rem; font-size: .6rem; color: #888; font-family: 'Courier New', monospace; }
     .morse-ref-item .ref-letter { color: var(--gold); font-weight: 700; width: 12px; flex-shrink: 0; }
-
-    /* Wordle grid */
-    .wordle-counter { font-size: .5rem; letter-spacing: .12em; color: #666; text-transform: uppercase; }
-    .dec-toast { text-align: center; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; min-height: 1.5em; margin-bottom: .75rem; font-family: 'Courier New', monospace; color: transparent; }
-    .dec-toast.err { color: var(--red-lt); }
-    .dec-toast.ok  { color: #4caf50; }
-
-    .wordle-grid-wrap { display: flex; justify-content: center; margin: .25rem 0 1.25rem; }
-    .wordle-grid     { display: flex; flex-direction: column; gap: 6px; }
-    .wordle-row      { display: flex; gap: 6px; }
-    .wordle-tile {
-      width: 52px; height: 52px; border: 2px solid #3a3d42;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem; font-weight: 900; text-transform: uppercase;
-      color: #fff; font-family: 'Courier New', monospace; user-select: none;
-      transition: border-color .05s;
-    }
-    .wordle-tile[data-state="tbd"]     { border-color: #888; }
-    .wordle-tile[data-state="correct"] { background: #538d4e; border-color: #538d4e; }
-    .wordle-tile[data-state="present"] { background: #b59f3b; border-color: #b59f3b; }
-    .wordle-tile[data-state="absent"]  { background: #3a3a3c; border-color: #3a3a3c; }
-    .wordle-tile.pop { animation: tile-pop .1s ease; }
-    @keyframes tile-pop { 0%,100%{transform:scale(1);} 50%{transform:scale(1.14);} }
-    .wordle-tile.flip { animation: tile-flip .46s ease forwards; }
-    @keyframes tile-flip { 0%{transform:rotateX(0deg);} 49%{transform:rotateX(90deg);} 51%{transform:rotateX(90deg);} 100%{transform:rotateX(0deg);} }
-    .wordle-tile.shake { animation: tile-shake .45s ease; }
-    @keyframes tile-shake { 0%,100%{transform:translateX(0);} 20%{transform:translateX(-7px);} 40%{transform:translateX(7px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(4px);} }
-
-    /* Keyboard */
-    .dec-keyboard { display: flex; flex-direction: column; gap: 6px; align-items: center; margin-top: .5rem; }
-    .dec-kb-row   { display: flex; gap: 5px; justify-content: center; }
-    .dec-key {
-      height: 50px; min-width: 34px; padding: 0 7px;
-      background: #818384; border: none; border-radius: 3px; color: #fff;
-      font-size: .72rem; font-weight: 700; text-transform: uppercase;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      font-family: 'Courier New', monospace; transition: background .15s; user-select: none;
-    }
-    .dec-key.wide { min-width: 58px; font-size: .58rem; }
-    .dec-key[data-state="correct"] { background: #538d4e; }
-    .dec-key[data-state="present"] { background: #b59f3b; }
-    .dec-key[data-state="absent"]  { background: #3a3a3c; }
-    .dec-key:hover { filter: brightness(1.18); }
 
     /* Victory */
     .dec-victory { text-align: center; padding: 3.5rem 2rem; background: #16181d; border: 1px solid #2a2d33; }
@@ -548,22 +494,13 @@
       .testimony-card { padding: 1rem; }
 
       /* Decoder */
-      .decoder-cols { grid-template-columns: 1fr; gap: 1rem; }
       .dec-panel { padding: 1rem; }
-      .morse-display { gap: .4rem; padding: .8rem .3rem; }
-      .m-dot  { width: 8px; height: 8px; }
-      .m-dash { width: 20px; height: 8px; }
-
-      /* Wordle tiles — smaller on phone */
-      .wordle-tile { width: 42px; height: 42px; font-size: 1.2rem; }
-      .wordle-grid  { gap: 4px; }
-      .wordle-row   { gap: 4px; }
-
-      /* Keyboard — tighter on phone */
-      .dec-keyboard { gap: 4px; }
-      .dec-kb-row   { gap: 3px; }
-      .dec-key      { height: 44px; min-width: 28px; padding: 0 5px; font-size: .65rem; }
-      .dec-key.wide { min-width: 48px; font-size: .52rem; }
+      .fitb-sentence { gap: .7rem 1.1rem; }
+      .fitb-letters  { gap: 3px; }
+      .fitb-tile { width: 30px; height: 30px; font-size: .9rem; }
+      .fitb-dot  { width: 5px; height: 5px; }
+      .fitb-dash { width: 13px; height: 5px; }
+      .morse-ref-grid { grid-template-columns: repeat(3, 1fr); }
 
       /* Audio player */
       .play-btn { width: 30px; height: 30px; font-size: .75rem; }
@@ -1037,37 +974,25 @@
   </div>
 
   <div id="decoder-wrap">
-    <span class="dec-progress-label">⬡ Intercepted Morse Transmission — Decode Each Word</span>
-    <div class="dec-sentence" id="dec-sentence"></div>
+    <p style="color:#777;font-size:.65rem;letter-spacing:.1em;text-align:center;margin-bottom:1.5rem;text-transform:uppercase;">
+      Each signal above a blank is a morse code letter — decode it and type your answer
+    </p>
 
-    <div class="decoder-cols">
+    <!-- Progress -->
+    <div class="fitb-progress-wrap">
+      <div class="fitb-progress-label"><span id="fitb-solved">0</span> / <span id="fitb-total">0</span> &nbsp;letters decoded</div>
+      <div class="fitb-bar-track"><div class="fitb-bar-fill" id="fitb-bar"></div></div>
+    </div>
 
-      <!-- Left: Morse clue -->
-      <div class="dec-panel">
-        <div class="dec-panel-label">
-          Intercepted Signal
-          <span class="dec-panel-sublabel" id="morse-word-idx"></span>
-        </div>
-        <div class="morse-display" id="morse-display"></div>
-        <button class="morse-ref-btn" id="morse-ref-btn" onclick="toggleMorseRef()">▼ &nbsp;Morse Code Reference</button>
-        <div id="morse-ref" style="display:none">
-          <div class="morse-ref-grid" id="morse-ref-grid"></div>
-        </div>
+    <!-- Fill-in-the-blanks sentence -->
+    <div class="fitb-sentence" id="fitb-sentence"></div>
+
+    <!-- Morse reference -->
+    <div class="dec-panel">
+      <button class="morse-ref-btn" id="morse-ref-btn" onclick="toggleMorseRef()">▼ &nbsp;Morse Code Reference</button>
+      <div id="morse-ref" style="display:none">
+        <div class="morse-ref-grid" id="morse-ref-grid"></div>
       </div>
-
-      <!-- Right: Wordle -->
-      <div class="dec-panel">
-        <div class="dec-panel-label">
-          Decode Attempt
-          <span class="wordle-counter" id="wordle-counter"></span>
-        </div>
-        <div class="dec-toast" id="dec-toast">&nbsp;</div>
-        <div class="wordle-grid-wrap">
-          <div class="wordle-grid" id="wordle-grid"></div>
-        </div>
-        <div class="dec-keyboard" id="dec-keyboard"></div>
-      </div>
-
     </div>
   </div>
 
@@ -1164,10 +1089,10 @@
   ['finnick','gary','gazelle'].forEach(initPlayer);
 
   /* ═══════════════════════════════════════════════════════════
-     DECODER GAME
+     DECODER — Fill-in-the-blanks
      Sentence: THE FIRST FACE YOU SEE KNOWS MORE THAN YOU THINK
   ═══════════════════════════════════════════════════════════ */
-  const DEC_WORDS = ['THE','FIRST','FACE','YOU','SEE','KNOWS','MORE','THAN','YOU','THINK'];
+  const FITB_WORDS = ['THE','FIRST','FACE','YOU','SEE','KNOWS','MORE','THAN','YOU','THINK'];
   const MORSE = {
     A:'.-',  B:'-...',C:'-.-.',D:'-..',E:'.',  F:'..-.',
     G:'--.',H:'....', I:'..',  J:'.---',K:'-.-',L:'.-..',
@@ -1175,291 +1100,142 @@
     S:'...', T:'-',  U:'..-', V:'...-',W:'.--',X:'-..-',
     Y:'-.--',Z:'--..'
   };
-
-  let dec = {};
+  let fitb = { cells: [], solvedCount: 0, totalLetters: 0 };
 
   function decInit() {
-    dec = {
-      idx: 0, guesses: [], current: '',
-      state: 'playing',   // 'playing' | 'complete'
-      keyStates: {},
-      solved: new Array(DEC_WORDS.length).fill(false),
-      busy: false
-    };
+    fitb.cells = [];
+    fitb.solvedCount = 0;
+    FITB_WORDS.forEach((word, wi) => {
+      word.split('').forEach((ch, li) => {
+        fitb.cells.push({ wordIdx: wi, letterIdx: li, letter: ch, solved: false });
+      });
+    });
+    fitb.totalLetters = fitb.cells.length;
     buildMorseRef();
-    decRender();
+    renderFitb();
+    updateFitbProgress();
+    setTimeout(() => {
+      const first = document.querySelector('.fitb-tile:not([readonly])');
+      if (first) first.focus();
+    }, 120);
   }
 
   function decReset() {
-    decStarted = false;
+    decStarted = true;
     document.getElementById('decoder-victory').style.display = 'none';
     document.getElementById('decoder-wrap').style.display = '';
-    decStarted = true;
     decInit();
   }
 
-  function decRender() {
-    document.getElementById('decoder-victory').style.display = 'none';
-    document.getElementById('decoder-wrap').style.display = '';
-    renderSentenceBar();
-    renderMorsePanel();
-    renderGrid();
-    renderKeyboard();
-    updateCounter();
-    toast('');
-  }
-
-  /* ── Sentence progress bar ────────────────────── */
-  function renderSentenceBar() {
-    const el = document.getElementById('dec-sentence');
-    el.innerHTML = '';
-    DEC_WORDS.forEach((w, i) => {
-      const chip = document.createElement('div');
-      chip.className = 'dec-word-chip' +
-        (dec.solved[i] ? ' solved' : i === dec.idx ? ' current' : '');
-      chip.textContent = dec.solved[i] ? w : '_ '.repeat(w.length).trim();
-      el.appendChild(chip);
-    });
-  }
-
-  /* ── Morse display ────────────────────────────── */
-  function renderMorsePanel() {
-    const word = DEC_WORDS[dec.idx];
-    document.getElementById('morse-word-idx').textContent =
-      `WORD ${dec.idx + 1} / ${DEC_WORDS.length}`;
-    const container = document.getElementById('morse-display');
+  function renderFitb() {
+    const container = document.getElementById('fitb-sentence');
     container.innerHTML = '';
-    word.split('').forEach((ch, i) => {
-      if (i > 0) {
-        const sep = document.createElement('div');
-        sep.className = 'morse-sep'; sep.textContent = '/';
-        container.appendChild(sep);
-      }
-      const cell = document.createElement('div');
-      cell.className = 'morse-char-cell'; cell.id = `mc-${i}`;
-      const syms = document.createElement('div');
-      syms.className = 'morse-symbols';
-      for (const s of MORSE[ch]) {
-        const dot = document.createElement('span');
-        dot.className = s === '.' ? 'm-dot' : 'm-dash';
-        syms.appendChild(dot);
-      }
-      const lbl = document.createElement('div');
-      lbl.className = 'morse-letter-label'; lbl.textContent = ch;
-      lbl.style.visibility = dec.solved[dec.idx] ? 'visible' : 'hidden';
-      cell.appendChild(syms); cell.appendChild(lbl);
-      container.appendChild(cell);
-    });
-  }
-
-  function revealMorseLetters() {
-    DEC_WORDS[dec.idx].split('').forEach((_, i) => {
-      setTimeout(() => {
-        const lbl = document.querySelector(`#mc-${i} .morse-letter-label`);
-        if (lbl) lbl.style.visibility = 'visible';
-      }, i * 160);
-    });
-  }
-
-  /* ── Wordle grid ──────────────────────────────── */
-  function renderGrid() {
-    const grid = document.getElementById('wordle-grid');
-    grid.innerHTML = '';
-    const len = DEC_WORDS[dec.idx].length;
-    for (let r = 0; r < 6; r++) {
-      const row = document.createElement('div');
-      row.className = 'wordle-row'; row.id = `drow-${r}`;
-      for (let c = 0; c < len; c++) {
-        const tile = document.createElement('div');
-        tile.className = 'wordle-tile'; tile.id = `dt-${r}-${c}`;
-        if (r < dec.guesses.length) {
-          const g = dec.guesses[r];
-          tile.textContent = g.letters[c];
-          tile.dataset.state = g.result[c];
-        } else if (r === dec.guesses.length && c < dec.current.length) {
-          tile.textContent = dec.current[c];
-          tile.dataset.state = 'tbd';
+    document.getElementById('fitb-total').textContent = fitb.totalLetters;
+    let globalIdx = 0;
+    FITB_WORDS.forEach((word) => {
+      const wordDiv = document.createElement('div');
+      wordDiv.className = 'fitb-word';
+      const lettersDiv = document.createElement('div');
+      lettersDiv.className = 'fitb-letters';
+      word.split('').forEach((ch) => {
+        const idx = globalIdx++;
+        const cell = fitb.cells[idx];
+        const cellDiv = document.createElement('div');
+        cellDiv.className = 'fitb-cell';
+        // Morse symbols
+        const morseDiv = document.createElement('div');
+        morseDiv.className = 'fitb-morse';
+        for (const s of MORSE[ch]) {
+          const sym = document.createElement('span');
+          sym.className = s === '.' ? 'fitb-dot' : 'fitb-dash';
+          morseDiv.appendChild(sym);
         }
-        row.appendChild(tile);
-      }
-      grid.appendChild(row);
-    }
+        // Input tile
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.autocomplete = 'off'; input.autocorrect = 'off';
+        input.autocapitalize = 'characters'; input.spellcheck = false;
+        input.maxLength = 3;
+        input.className = 'fitb-tile';
+        input.id = `fitb-${idx}`;
+        input.dataset.letter = ch; input.dataset.idx = idx;
+        if (cell.solved) {
+          input.value = ch; input.readOnly = true;
+          input.classList.add('correct');
+        }
+        input.addEventListener('input',   (e) => fitbInput(e, idx, ch));
+        input.addEventListener('keydown', (e) => fitbKeydown(e, idx));
+        cellDiv.appendChild(morseDiv);
+        cellDiv.appendChild(input);
+        lettersDiv.appendChild(cellDiv);
+      });
+      wordDiv.appendChild(lettersDiv);
+      container.appendChild(wordDiv);
+    });
   }
 
-  function refreshCurrentRow() {
-    const len = DEC_WORDS[dec.idx].length;
-    const r = dec.guesses.length;
-    for (let c = 0; c < len; c++) {
-      const tile = document.getElementById(`dt-${r}-${c}`);
-      if (!tile) continue;
-      if (c < dec.current.length) {
-        tile.textContent = dec.current[c]; tile.dataset.state = 'tbd';
+  function fitbInput(e, idx, correctLetter) {
+    const raw = e.target.value;
+    e.target.value = '';
+    const typed = raw.replace(/[^a-zA-Z]/g, '').slice(-1).toUpperCase();
+    if (!typed) return;
+    const cell = fitb.cells[idx];
+    if (cell.solved) return;
+    if (typed === correctLetter) {
+      const input = document.getElementById(`fitb-${idx}`);
+      input.value = correctLetter;
+      input.readOnly = true;
+      input.classList.add('correct');
+      cell.solved = true;
+      fitb.solvedCount++;
+      updateFitbProgress();
+      if (fitb.solvedCount === fitb.totalLetters) {
+        setTimeout(showFitbVictory, 700);
       } else {
-        tile.textContent = ''; delete tile.dataset.state;
+        focusNextUnsolved(idx);
       }
+    } else {
+      const input = document.getElementById(`fitb-${idx}`);
+      input.classList.remove('wrong'); void input.offsetWidth;
+      input.classList.add('wrong');
+      setTimeout(() => input.classList.remove('wrong'), 430);
     }
   }
 
-  /* ── Keyboard ─────────────────────────────────── */
-  function renderKeyboard() {
-    const kb = document.getElementById('dec-keyboard');
-    kb.innerHTML = '';
-    [['Q','W','E','R','T','Y','U','I','O','P'],
-     ['A','S','D','F','G','H','J','K','L'],
-     ['ENTER','Z','X','C','V','B','N','M','⌫']].forEach(row => {
-      const rowEl = document.createElement('div');
-      rowEl.className = 'dec-kb-row';
-      row.forEach(k => {
-        const btn = document.createElement('button');
-        btn.className = 'dec-key' + (k.length > 1 ? ' wide' : '');
-        btn.textContent = k; btn.dataset.key = k;
-        if (dec.keyStates[k]) btn.dataset.state = dec.keyStates[k];
-        btn.addEventListener('click', () => decKey(k));
-        rowEl.appendChild(btn);
-      });
-      kb.appendChild(rowEl);
-    });
+  function fitbKeydown(e, idx) {
+    if (e.key === 'Backspace')  { e.preventDefault(); focusPrevUnsolved(idx); }
+    if (e.key === 'ArrowRight' || e.key === 'Tab') { e.preventDefault(); focusNextUnsolved(idx); }
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); focusPrevUnsolved(idx); }
   }
 
-  /* ── Counter & toast ──────────────────────────── */
-  function updateCounter() {
-    const left = 6 - dec.guesses.length;
-    document.getElementById('wordle-counter').textContent =
-      `WORD ${dec.idx + 1} OF ${DEC_WORDS.length} — ${left} ATTEMPT${left === 1 ? '' : 'S'} LEFT`;
-  }
-
-  function toast(msg, type = '') {
-    const el = document.getElementById('dec-toast');
-    el.textContent = msg || '\u00a0';
-    el.className = 'dec-toast' + (type ? ` ${type}` : '');
-  }
-
-  /* ── Key handler ──────────────────────────────── */
-  function decKey(key) {
-    if (dec.state !== 'playing' || dec.busy) return;
-    const word = DEC_WORDS[dec.idx];
-    if (key === '⌫' || key === 'BACKSPACE') {
-      if (dec.current.length > 0) { dec.current = dec.current.slice(0, -1); refreshCurrentRow(); }
-      return;
+  function focusNextUnsolved(from) {
+    for (let i = from + 1; i < fitb.cells.length; i++) {
+      if (!fitb.cells[i].solved) { document.getElementById(`fitb-${i}`)?.focus(); return; }
     }
-    if (key === 'ENTER') { decSubmit(); return; }
-    if (/^[A-Z]$/.test(key) && dec.current.length < word.length) {
-      dec.current += key;
-      refreshCurrentRow();
-      const tile = document.getElementById(`dt-${dec.guesses.length}-${dec.current.length - 1}`);
-      if (tile) { tile.classList.remove('pop'); void tile.offsetWidth; tile.classList.add('pop'); }
+    for (let i = 0; i < from; i++) {
+      if (!fitb.cells[i].solved) { document.getElementById(`fitb-${i}`)?.focus(); return; }
     }
   }
 
-  /* ── Submit guess ─────────────────────────────── */
-  function decSubmit() {
-    const word = DEC_WORDS[dec.idx];
-    if (dec.current.length !== word.length) {
-      toast('Not enough letters', 'err');
-      shakeRow(dec.guesses.length);
-      setTimeout(() => toast(''), 1400);
-      return;
+  function focusPrevUnsolved(from) {
+    for (let i = from - 1; i >= 0; i--) {
+      if (!fitb.cells[i].solved) { document.getElementById(`fitb-${i}`)?.focus(); return; }
     }
-    const result = evalGuess(dec.current, word);
-    const guess  = { letters: dec.current.split(''), result };
-    dec.current  = '';
-    dec.busy     = true;
-
-    const rowIdx = dec.guesses.length;
-    const DELAY  = 280;
-
-    // Reveal tiles one by one
-    result.forEach((state, c) => {
-      setTimeout(() => {
-        const tile = document.getElementById(`dt-${rowIdx}-${c}`);
-        tile.classList.add('flip');
-        setTimeout(() => { tile.dataset.state = state; tile.classList.remove('flip'); }, DELAY / 2);
-      }, c * DELAY);
-    });
-
-    setTimeout(() => {
-      dec.guesses.push(guess);
-      dec.busy = false;
-
-      // Update key colours
-      result.forEach((state, c) => {
-        const ltr = guess.letters[c];
-        const cur = dec.keyStates[ltr];
-        if (!cur || (cur !== 'correct' && (state === 'correct' || (state === 'present' && cur !== 'correct')))) {
-          dec.keyStates[ltr] = state;
-        }
-      });
-      renderKeyboard();
-      updateCounter();
-
-      const won = result.every(r => r === 'correct');
-
-      if (won) {
-        dec.solved[dec.idx] = true;
-        revealMorseLetters();
-        renderSentenceBar();
-        if (dec.idx === DEC_WORDS.length - 1) {
-          setTimeout(showVictory, 1400);
-        } else {
-          toast(dec.idx === 4 ? '🔎 Halfway there!' : 'Decoded! Next word...', 'ok');
-          setTimeout(advanceWord, 1900);
-        }
-      } else if (dec.guesses.length >= 6) {
-        toast(`The word was ${word}`, 'err');
-        setTimeout(() => {
-          if (dec.idx < DEC_WORDS.length - 1) advanceWord();
-          else showVictory();
-        }, 2400);
-      }
-    }, word.length * DELAY + DELAY);
   }
 
-  /* ── Evaluate (standard Wordle logic) ────────── */
-  function evalGuess(guess, target) {
-    const res  = Array(guess.length).fill('absent');
-    const tArr = target.split('');
-    const gArr = guess.split('');
-    for (let i = 0; i < gArr.length; i++) {
-      if (gArr[i] === tArr[i]) { res[i] = 'correct'; tArr[i] = null; gArr[i] = null; }
-    }
-    for (let i = 0; i < gArr.length; i++) {
-      if (!gArr[i]) continue;
-      const j = tArr.indexOf(gArr[i]);
-      if (j !== -1) { res[i] = 'present'; tArr[j] = null; }
-    }
-    return res;
+  function updateFitbProgress() {
+    document.getElementById('fitb-solved').textContent = fitb.solvedCount;
+    document.getElementById('fitb-bar').style.width =
+      ((fitb.solvedCount / fitb.totalLetters) * 100) + '%';
   }
 
-  function shakeRow(r) {
-    document.querySelectorAll(`#drow-${r} .wordle-tile`).forEach(t => {
-      t.classList.remove('shake'); void t.offsetWidth; t.classList.add('shake');
-    });
-  }
-
-  /* ── Advance to next word ─────────────────────── */
-  function advanceWord() {
-    dec.idx++;
-    dec.guesses = []; dec.current = '';
-    dec.state = 'playing'; dec.keyStates = {};
-    toast('');
-    renderSentenceBar();
-    renderMorsePanel();
-    renderGrid();
-    renderKeyboard();
-    updateCounter();
-  }
-
-  /* ── Victory screen ───────────────────────────── */
-  function showVictory() {
-    dec.state = 'complete';
+  function showFitbVictory() {
     document.getElementById('decoder-wrap').style.display = 'none';
-    const el = document.getElementById('decoder-victory');
-    el.style.display = '';
+    document.getElementById('decoder-victory').style.display = '';
     document.getElementById('victory-sentence').innerHTML =
-      DEC_WORDS.map(w => `<span>${w}</span>`).join(' ');
+      FITB_WORDS.map(w => `<span>${w}</span>`).join(' ');
   }
 
-  /* ── Morse reference chart ────────────────────── */
   function buildMorseRef() {
     const grid = document.getElementById('morse-ref-grid');
     if (!grid || grid.children.length) return;
@@ -1478,15 +1254,6 @@
     ref.style.display = open ? '' : 'none';
     btn.textContent = (open ? '▲' : '▼') + ' \u00a0Morse Code Reference';
   }
-
-  /* ── Physical keyboard support ────────────────── */
-  document.addEventListener('keydown', e => {
-    if (!document.getElementById('section-decoder').classList.contains('active')) return;
-    if (e.ctrlKey || e.metaKey || e.altKey) return;
-    if (e.key === 'Enter')     { decKey('ENTER'); return; }
-    if (e.key === 'Backspace') { decKey('⌫');    return; }
-    if (/^[a-zA-Z]$/.test(e.key)) decKey(e.key.toUpperCase());
-  });
 </script>
 </body>
 </html>
