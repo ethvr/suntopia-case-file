@@ -557,7 +557,6 @@
       <p><strong>CASE SUMMARY —</strong> A series of mammal disappearances have been reported across multiple districts of Suntopia. Victims were last seen in the Rainforest District, Tundratown, Downtown, Savanna Central, Canyonlands, and surrounding areas. All missing individuals appear to be predator-type mammals.</p>
       <p>CCTV footage recovered from <strong>Rainforest District CAM+097</strong> at timestamp <strong>11:29:42</strong> shows suspicious paw print activity and unidentified claw markings on pavement. Two distinct footprint types have been identified at the scene.</p>
       <p>Seven persons of interest have been identified and profiled. Vehicle registration plates have been partially redacted pending further authorisation. Audio testimony has been collected from three witnesses — recordings are incomplete and under active analysis.</p>
-      <p>Paw print samples from all seven suspects have been logged in the Suntopia Paw Print Database for forensic cross-referencing against CCTV evidence.</p>
       <div class="stamp">Top Secret</div>
     </div>
     <div class="paper case-stats">
@@ -585,7 +584,7 @@
       <div class="suspect-card-header"><span>Suspect List — Missing Mammal Case</span><span>#472984Z</span></div>
       <div class="suspect-card-top">
         <div class="suspect-photo-wrap">
-          <img src="assets/char_clawhauser.jpeg" alt="Benjamin Clawhauser" />
+          <img src="assets/char_clawhauser.webp" alt="Benjamin Clawhauser" />
         </div>
         <div class="suspect-info">
           <span class="status status-poi">Person of Interest</span>
@@ -726,7 +725,7 @@
 <!-- ═══════════ EVIDENCE ═══════════ -->
 <div id="section-evidence" class="section">
   <div class="section-title">
-    <h2>Physical Evidence</h2><span class="tag">3 Exhibits</span><div class="divider"></div>
+    <h2>Physical Evidence</h2><span class="tag">2 Exhibits</span><div class="divider"></div>
   </div>
 
   <div class="evidence-grid">
@@ -792,23 +791,6 @@
         <div class="district-item"><div class="district-name">Savanna Central</div>Multiple — connected to all districts</div>
         <div class="district-item"><div class="district-name">Canyonlands</div>Multiple — trail to Polar Strait</div>
         <div class="district-item"><div class="district-name">Highlands / Polar Strait</div>Outer district disappearances</div>
-      </div>
-    </div>
-
-    <!-- EXHIBIT C — PAW PRINT DATABASE (full width) -->
-    <div class="paper evidence-card full">
-      <div class="evidence-label">Suntopia Paw Print Database <span class="exhibit">EXHIBIT C</span></div>
-
-      <div style="padding:1.5rem; background:#1e2530; margin-bottom:1rem;">
-        <div class="pinned-photo">
-          <img src="assets/evidence_pawdb.jpeg" alt="Suntopia Paw Print Database" />
-          <span class="photo-caption">Suntopia Paw Print Database — All Suspects Cross-Referenced</span>
-        </div>
-      </div>
-
-      <div style="font-size:.72rem; line-height:1.6; color:var(--muted); font-style:italic;">
-        Official paw-print registry. Each suspect's print has been catalogued for forensic comparison
-        against footprints recovered from Rainforest District CAM+097 (Exhibit A).
       </div>
     </div>
 
@@ -908,21 +890,32 @@
       </div>
     </div>
 
-    <!-- Clawhauser — no recording -->
+    <!-- Clawhauser -->
     <div class="paper testimony-card">
       <div class="testimony-header">
-        <div class="t-photo" style="transform:rotate(-2deg)"><img src="assets/char_clawhauser.jpeg" alt="Benjamin Clawhauser" /></div>
+        <div class="t-photo" style="transform:rotate(-2deg)"><img src="assets/char_clawhauser.webp" alt="Benjamin Clawhauser" /></div>
         <div class="witness-info">
           <h3>B. Clawhauser</h3>
           <div class="witness-role">Receptionist · Cheetah · 159 cm</div>
         </div>
       </div>
-      <span class="rec-status rec-unavailable">⬤ No Recording Available</span>
-      <div class="no-recording">Audio testimony not yet obtained<br><span style="font-size:.5rem;display:block;margin-top:.25rem;">— Interview pending —</span></div>
-      <div class="transcript-note">As front desk receptionist, Clawhauser may hold critical visitor access logs. Interview yet to be conducted.</div>
+      <span class="rec-status rec-incomplete">⬤ Recording Incomplete</span>
+      <div class="audio-player">
+        <div class="audio-player-label">Recording — Suspect Testimony / ZPD Interview Room</div>
+        <div class="audio-controls">
+          <button class="play-btn" onclick="togglePlay('clawhauser')">▶</button>
+          <div class="audio-track">
+            <div class="progress-bar" onclick="seek(event,'clawhauser')" id="bar-clawhauser"><div class="progress-fill" id="fill-clawhauser"></div></div>
+            <div class="time-display"><span id="cur-clawhauser">0:00</span><span id="dur-clawhauser">--:--</span></div>
+          </div>
+        </div>
+      </div>
+      <audio id="audio-clawhauser" src="benjamin clawhause audio.m4a"></audio>
+      <div class="incomplete-note">Recording cuts off — remainder of statement unavailable</div>
+      <div class="transcript-note">Clawhauser's account of visitor access logs and front desk observations during the disappearance window.</div>
     </div>
 
-    <!-- Dr Badger — no recording -->
+    <!-- Dr Badger -->
     <div class="paper testimony-card">
       <div class="testimony-header">
         <div class="t-photo"><img src="assets/char_dr_badger.jpeg" alt="Dr. Badger" /></div>
@@ -931,12 +924,23 @@
           <div class="witness-role">Medical Professional · Badger · 91 cm</div>
         </div>
       </div>
-      <span class="rec-status rec-unavailable">⬤ No Recording Available</span>
-      <div class="no-recording">Audio testimony not yet obtained<br><span style="font-size:.5rem;display:block;margin-top:.25rem;">— Interview pending —</span></div>
-      <div class="transcript-note">Dr. Badger's medical background raises questions about potential involvement. Interview pending clearance.</div>
+      <span class="rec-status rec-incomplete">⬤ Recording Incomplete</span>
+      <div class="audio-player">
+        <div class="audio-player-label">Recording — Suspect Testimony / ZPD Interview Room</div>
+        <div class="audio-controls">
+          <button class="play-btn" onclick="togglePlay('drbadger')">▶</button>
+          <div class="audio-track">
+            <div class="progress-bar" onclick="seek(event,'drbadger')" id="bar-drbadger"><div class="progress-fill" id="fill-drbadger"></div></div>
+            <div class="time-display"><span id="cur-drbadger">0:00</span><span id="dur-drbadger">--:--</span></div>
+          </div>
+        </div>
+      </div>
+      <audio id="audio-drbadger" src="dr badger audio.ogg"></audio>
+      <div class="incomplete-note">Recording cuts off — remainder of statement unavailable</div>
+      <div class="transcript-note">Dr. Badger's testimony regarding medical activities and whereabouts. Recording is truncated before key questions were answered.</div>
     </div>
 
-    <!-- Mr Big — declined -->
+    <!-- Mr Big -->
     <div class="paper testimony-card">
       <div class="testimony-header">
         <div class="t-photo" style="transform:rotate(2deg)"><img src="assets/char_mr_big.jpeg" alt="Mr. Big" /></div>
@@ -945,9 +949,20 @@
           <div class="witness-role">Head of Tundratown Mafia · Shrew · 20 cm</div>
         </div>
       </div>
-      <span class="rec-status rec-unavailable">⬤ No Recording Available</span>
-      <div class="no-recording">Subject declined — legal counsel invoked<br><span style="font-size:.5rem;display:block;margin-top:.25rem;">— Status: Non-cooperative —</span></div>
-      <div class="transcript-note">Mr. Big invoked legal counsel and refused to provide a recorded statement. All associates also unresponsive.</div>
+      <span class="rec-status rec-incomplete">⬤ Recording Incomplete</span>
+      <div class="audio-player">
+        <div class="audio-player-label">Recording — Suspect Testimony / ZPD Interview Room</div>
+        <div class="audio-controls">
+          <button class="play-btn" onclick="togglePlay('mrbig')">▶</button>
+          <div class="audio-track">
+            <div class="progress-bar" onclick="seek(event,'mrbig')" id="bar-mrbig"><div class="progress-fill" id="fill-mrbig"></div></div>
+            <div class="time-display"><span id="cur-mrbig">0:00</span><span id="dur-mrbig">--:--</span></div>
+          </div>
+        </div>
+      </div>
+      <audio id="audio-mrbig" src="Mr Big.mp3"></audio>
+      <div class="incomplete-note">Recording cuts off — remainder of statement unavailable</div>
+      <div class="transcript-note">Mr. Big's partial statement regarding Tundratown activity. Recording obtained covertly — subject was unaware of recording device.</div>
     </div>
 
     <!-- Mayor Lionheart — restricted -->
@@ -959,9 +974,16 @@
           <div class="witness-role">Mayor of Suntopia · Lion · 190 cm</div>
         </div>
       </div>
-      <span class="rec-status rec-unavailable">⬤ No Recording Available</span>
-      <div class="no-recording">Diplomatically restricted — statement withheld<br><span style="font-size:.5rem;display:block;margin-top:.25rem;">— Status: Restricted Access —</span></div>
-      <div class="transcript-note">Mayor Lionheart's office cited mayoral privilege. A formal written statement was submitted but recorded testimony remains unavailable.</div>
+      <span class="rec-status rec-incomplete">⬤ Recording Incomplete</span>
+      <div class="audio-player">
+        <button class="play-btn" onclick="togglePlay('mayorlionheart')">▶</button>
+        <div class="player-right">
+          <div class="progress-bar" onclick="seek(event,'mayorlionheart')" id="bar-mayorlionheart"><div class="progress-fill" id="fill-mayorlionheart"></div></div>
+          <div class="time-display"><span id="cur-mayorlionheart">0:00</span><span id="dur-mayorlionheart">--:--</span></div>
+        </div>
+      </div>
+      <audio id="audio-mayorlionheart" src="Mayor Lionheart.aac"></audio>
+      <div class="transcript-note">Mayor Lionheart's recorded statement — obtained under case authority #472984Z. Contents partially audible.</div>
     </div>
 
   </div><!-- /testimony-grid -->
